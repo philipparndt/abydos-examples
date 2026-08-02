@@ -1,0 +1,19 @@
+{
+  "name": "app in the cluster",
+  "type": "go",
+  "request": "launch",
+  "program": "${workspaceFolder}/app",
+  "cwd": "${workspaceFolder}/app",
+  "ideai.devPod": {
+    "context": "${currentContext}",
+    "allowedContexts": "k3c-*, k3d-*, *-local",
+    "namespace": "ideai-examples",
+    "port": 8080
+  },
+  "ideai.helm": {
+    "chart": "deploy/chart",
+    "release": "multi-tier",
+    "values": ["deploy/values-dev.yaml"],
+    "container": "app"
+  }
+}

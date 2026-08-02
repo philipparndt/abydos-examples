@@ -1,0 +1,8 @@
+{
+  "name": "here",
+  "type": "lldb",
+  "request": "launch",
+  "program": "${workspaceFolder}/build/c-hello",
+  "cwd": "${workspaceFolder}",
+  "ideai.make": { "targets": ["build"] }
+}

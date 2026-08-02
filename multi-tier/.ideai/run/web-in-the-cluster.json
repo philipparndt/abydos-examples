@@ -1,0 +1,19 @@
+{
+  "name": "web in the cluster",
+  "type": "go",
+  "request": "launch",
+  "program": "${workspaceFolder}/web",
+  "cwd": "${workspaceFolder}/web",
+  "ideai.devPod": {
+    "context": "${currentContext}",
+    "allowedContexts": "k3c-*, k3d-*, *-local",
+    "namespace": "ideai-examples",
+    "port": 3000
+  },
+  "ideai.helm": {
+    "chart": "deploy/chart",
+    "release": "multi-tier",
+    "values": ["deploy/values-dev.yaml"],
+    "container": "web"
+  }
+}

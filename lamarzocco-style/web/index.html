@@ -1,0 +1,23 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>lamarzocco-style</title>
+<style>
+  body { font: 15px/1.5 -apple-system, system-ui, sans-serif; margin: 3rem auto; max-width: 32rem;
+         color: #e6e6e6; background: #1b1d23; }
+  button { font: inherit; padding: .5rem 1rem; border-radius: .4rem; border: 1px solid #3a3f4b;
+           background: #262a33; color: inherit; cursor: pointer; }
+  .on { color: #6fcf7f; } .off { color: #9aa0aa; }
+</style>
+<h1>lamarzocco-style</h1>
+<p id="state" class="off">…</p>
+<button id="toggle">Toggle</button>
+<script>
+  async function refresh() {
+    const s = await (await fetch('/api/status')).json();
+    const el = document.getElementById('state');
+    el.textContent = `${s.name} — ${s.model} is ${s.on ? 'on' : 'off'}, ${s.brewed} brewed`;
+    el.className = s.on ? 'on' : 'off';
+  }
+  document.getElementById('toggle').onclick = async () => { await fetch('/api/toggle'); refresh(); };
+  refresh(); setInterval(refresh, 2000);
+</script>

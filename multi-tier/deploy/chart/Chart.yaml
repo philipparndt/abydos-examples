@@ -1,0 +1,6 @@
+apiVersion: v2
+name: multi-tier
+description: An application and a web front end in one pod, with a database and a cache beside them.
+type: application
+version: 0.1.0
+appVersion: "0.1.0"

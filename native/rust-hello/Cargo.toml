@@ -1,0 +1,12 @@
+[package]
+name = "rust-hello"
+version = "0.1.0"
+edition = "2021"
+
+[[bin]]
+name = "rust-hello"
+path = "src/main.rs"
+
+# Debug info in release too, so a profile or a crash report is readable.
+[profile.release]
+debug = true

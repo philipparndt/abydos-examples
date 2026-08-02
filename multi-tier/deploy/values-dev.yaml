@@ -1,0 +1,14 @@
+# The stage that is developed against. Nothing here is a secret worth keeping;
+# a real project would put this file through helm-secrets and set
+# "secrets": true in the launch configuration.
+stage: dev
+
+image:
+  # Anything that sits still: the container being developed is replaced by the
+  # supervisor a second after the chart is installed, and the other one only
+  # has to exist.
+  app: registry.k8s.io/pause:3.9
+  web: registry.k8s.io/pause:3.9
+
+database:
+  password: "dev-password"

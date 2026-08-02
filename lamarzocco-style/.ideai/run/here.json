@@ -1,0 +1,8 @@
+{
+  "name": "here",
+  "type": "go",
+  "request": "launch",
+  "program": "${workspaceFolder}",
+  "cwd": "${workspaceFolder}",
+  "args": ["${workspaceFolder}/config/dev.json"]
+}

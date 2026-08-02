@@ -1,0 +1,71 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-multi-tier
+  labels:
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/name: multi-tier
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ .Release.Name }}-multi-tier
+  template:
+    metadata:
+      labels:
+        app: {{ .Release.Name }}-multi-tier
+        app.kubernetes.io/instance: {{ .Release.Name }}
+    spec:
+      containers:
+        - name: app
+          image: {{ .Values.image.app }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env:
+            - name: STAGE
+              value: {{ .Values.stage | quote }}
+            - name: DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Release.Name }}-multi-tier
+                  key: databaseURL
+            - name: VALKEY_ADDR
+              value: {{ .Release.Name }}-cache:6379
+          ports:
+            - name: http
+              containerPort: 8080
+            - name: pprof
+              containerPort: 6060
+        - name: web
+          image: {{ .Values.image.web }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env:
+            - name: API_URL
+              value: http://localhost:8080
+          ports:
+            - name: web
+              containerPort: 3000
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: {{ .Release.Name }}-multi-tier
+type: Opaque
+stringData:
+  databaseURL: postgres://{{ .Values.database.user }}:{{ .Values.database.password }}@{{ .Release.Name }}-db:5432/{{ .Values.database.name }}?sslmode=disable
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Release.Name }}-multi-tier
+  labels:
+    app.kubernetes.io/instance: {{ .Release.Name }}
+spec:
+  selector:
+    app: {{ .Release.Name }}-multi-tier
+  ports:
+    - name: http
+      port: 8080
+      targetPort: 8080
+    - name: web
+      port: 3000
+      targetPort: 3000

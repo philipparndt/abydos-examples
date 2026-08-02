@@ -1,0 +1,7 @@
+{
+  "name": "app here",
+  "type": "go",
+  "request": "launch",
+  "program": "${workspaceFolder}/app",
+  "cwd": "${workspaceFolder}/app"
+}

@@ -1,0 +1,24 @@
+# What production would look like. The stage's own file overrides what differs.
+stage: prod
+
+image:
+  app: ghcr.io/example/multi-tier-app:1.0.0
+  web: ghcr.io/example/multi-tier-web:1.0.0
+  pullPolicy: IfNotPresent
+
+database:
+  # In a real chart this is a managed database; here it is a pod, so the example
+  # runs anywhere.
+  enabled: true
+  image: postgres:16-alpine
+  name: app
+  user: app
+  password: "from-values"
+
+cache:
+  enabled: true
+  image: valkey/valkey:8-alpine
+
+ingress:
+  enabled: false
+  host: ""
