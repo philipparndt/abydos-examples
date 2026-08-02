@@ -32,5 +32,7 @@ library for the target as well:
 
     rustup target add aarch64-unknown-linux-musl
 
-Debugging them in a cluster is not built yet: the debugger in the pod is
-Delve, which is Go's. They run there; you step through them here.
+They **debug** there too. Delve is Go's, so the pod holds a native program
+with gdbserver instead and the LLDB on this machine drives it — the binary was
+built here, so breakpoints, frames and variables all land on these sources.
+Press debug with a breakpoint set and it stops in the cluster.

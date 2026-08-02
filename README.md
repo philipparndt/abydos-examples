@@ -68,7 +68,8 @@ kubectl delete namespace ideai-examples
 
 ## What is not here yet
 
-Debugging a native binary *in a cluster*. All of them run there — the binary
-is cross-compiled here and pushed into the pod — but the debugger the pod
-starts is Delve, which is Go's. Zig, Rust, C, C++ and Odin debug locally with
-LLDB.
+Languages that do not compile to a binary. Go, Zig, Rust, C, C++ and Odin all
+run *and debug* in a cluster: the binary is cross-compiled here, pushed into
+the pod, and held there by Delve or gdbserver depending on the language. JVM,
+Node and Python would need a different arrangement — their sources copied in
+and a debugger attached over their own protocol — and that is not built.
