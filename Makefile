@@ -13,9 +13,9 @@ scenarios: ## Make the git repositories in git-scenarios/out
 
 .PHONY: build
 build: ## Build every example that has a build
-	@cd go-service && go build ./...
-	@cd smart-home-microservice && go build ./...
-	@cd multi-tier && go build ./...
+	@cd go-service && go build -o build/go-service .
+	@cd smart-home-microservice && go build -o build/smart-home-microservice .
+	@cd multi-tier && go build -o build/app ./app && go build -o build/web ./web
 	@cd native/odin-hello && $(MAKE) -s build
 	@cd native/zig-hello && zig build
 	@cd native/rust-hello && cargo build -q
@@ -29,7 +29,7 @@ charts: ## Check the charts
 
 .PHONY: clean
 clean: ## Remove everything built and generated
-	@rm -rf git-scenarios/out native/*/build native/zig-hello/zig-out \
+	@rm -rf git-scenarios/out */build native/*/build native/zig-hello/zig-out \
 		native/zig-hello/.zig-cache native/rust-hello/target
 	@cd go-service && go clean
 	@echo "==> cleaned"

@@ -1,5 +1,14 @@
 # Built things. Every example builds in seconds; none of it belongs here.
+#
+# `go build ./...` drops a main package's binary in the directory it was run
+# from, named after the module — which is how three of them were committed
+# once. The Makefile builds into build/ now; these are the belt to that pair
+# of braces.
 build/
+/go-service/go-service
+/smart-home-microservice/smart-home-microservice
+/multi-tier/app/app
+/multi-tier/web/web
 zig-out/
 .zig-cache/
 target/
