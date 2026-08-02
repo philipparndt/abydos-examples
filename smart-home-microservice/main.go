@@ -56,7 +56,7 @@ func (m *Machine) Toggle() bool {
 
 func main() {
 	if len(os.Args) < 2 {
-		log.Fatal("no configuration file given: lamarzocco-style config/dev.json")
+		log.Fatal("no configuration file given: smart-home-microservice config/dev.json")
 	}
 	config, err := load(os.Args[1])
 	if err != nil {

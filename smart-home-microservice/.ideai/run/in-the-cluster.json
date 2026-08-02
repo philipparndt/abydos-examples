@@ -11,6 +11,6 @@
     "namespace": "ideai-examples",
     "files": ["config/dev.json"],
     "port": 8080,
-    "ingressHost": "lamarzocco.dev.local"
+    "ingressHost": "coffee.dev.local"
   }
 }
