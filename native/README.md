@@ -16,6 +16,21 @@ or coldest reading and press debug.
 | c-hello | `cc -g -O0` |
 | cpp-hello | `c++ -g -O0 -std=c++20` |
 
-Odin and Zig also **run** in a cluster — see odin-hello's README for how a
-Linux binary gets built on a Mac. Debugging them there is not built yet: the
-debugger in the pod is Delve, which is Go's.
+All four also **run** in a cluster — each has an **in the cluster**
+configuration — and the Linux binary is built here, on a Mac:
+
+| project | how it cross-compiles |
+|---|---|
+| zig-hello | `zig build -Dtarget=aarch64-linux-musl` |
+| odin-hello | Odin emits the objects, zig's linker takes them — its own cannot |
+| c-hello | `zig cc -target aarch64-linux-musl` |
+| cpp-hello | `zig c++ -target aarch64-linux-musl` |
+| rust-hello | `cargo build --target aarch64-unknown-linux-musl`, linked by zig |
+
+So `brew install zig` covers four of them, and Rust wants its own standard
+library for the target as well:
+
+    rustup target add aarch64-unknown-linux-musl
+
+Debugging them in a cluster is not built yet: the debugger in the pod is
+Delve, which is Go's. They run there; you step through them here.

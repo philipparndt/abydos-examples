@@ -22,7 +22,7 @@ make charts      # lint the chart
 | [go-service](go-service) | a backend with nothing in it but the shape of one: run it here, run it in a cluster, debug it there, profile it |
 | [smart-home-microservice](smart-home-microservice) | a service that will not start without its configuration file, with a page to look at — the awkward one to develop in a cluster |
 | [multi-tier](multi-tier) | somebody else's chart: an application and a web front end in one pod, a database and a cache beside them, a values file per stage |
-| [native/odin-hello](native/odin-hello) | odin, written the way Odin is written, built by make and debugged with LLDB |
+| [native/odin-hello](native/odin-hello) | odin, written the way Odin is written — and running in a cluster, which its own linker cannot manage alone |
 | [native/zig-hello](native/zig-hello) | zig, built by make and debugged with LLDB |
 | [native/rust-hello](native/rust-hello) | rust, the same |
 | [native/c-hello](native/c-hello) | C, the same |
@@ -68,7 +68,7 @@ kubectl delete namespace ideai-examples
 
 ## What is not here yet
 
-Debugging a native binary *in a cluster*. The development pod runs any static
-binary, but the debugger it starts is Delve, which is Go's. Zig, Rust, C and
-C++ debug locally with LLDB; in a cluster they run, and stepping through them
-there is not built yet.
+Debugging a native binary *in a cluster*. All of them run there — the binary
+is cross-compiled here and pushed into the pod — but the debugger the pod
+starts is Delve, which is Go's. Zig, Rust, C, C++ and Odin debug locally with
+LLDB.
