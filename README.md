@@ -30,6 +30,20 @@ make charts      # lint the chart
 | [openscad](openscad) | one parametric model — change a number, save, watch the preview |
 | [git-scenarios](git-scenarios) | nine repositories, each stuck in a state worth looking at |
 
+## One repository, eight projects
+
+This repository is itself the case for subprojects: open it and the tree shows
+everything, but there is no one set of launch configurations, no one module to
+build, no one thing `go test` means. Right-click a folder — `go-service`,
+`native/odin-hello`, `multi-tier` — and choose **Open as Subproject**: the tree
+stays whole, and the run configurations, the build, git and the language server
+all follow the part being worked on. The pill beside the project name says
+which one, and its cross gives the whole repository back.
+
+`git-scenarios/out` is the harder case, since each of those is a repository of
+its own inside this one. Opening one as a subproject points git at *that* work
+tree — the changes pane, the history and the branch name all come from it.
+
 ## What needs what
 
 Nothing here needs a cluster to *build*. The cluster examples need one to run,
