@@ -12,12 +12,13 @@
 <p id="state" class="off">…</p>
 <button id="toggle">Toggle</button>
 <script>
-  async function refresh() {
-    const s = await (await fetch('/api/status')).json();
+  // The service pushes every change down this stream, so nothing here asks
+  // again on a timer. EventSource reconnects on its own if the pod restarts.
+  new EventSource('/api/events').onmessage = (event) => {
+    const s = JSON.parse(event.data);
     const el = document.getElementById('state');
     el.textContent = `${s.name} — ${s.model} is ${s.on ? 'on' : 'off'}, ${s.brewed} brewed`;
     el.className = s.on ? 'on' : 'off';
-  }
-  document.getElementById('toggle').onclick = async () => { await fetch('/api/toggle'); refresh(); };
-  refresh(); setInterval(refresh, 2000);
+  };
+  document.getElementById('toggle').onclick = () => fetch('/api/toggle');
 </script>

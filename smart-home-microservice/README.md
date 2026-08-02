@@ -11,4 +11,6 @@ pod has never seen the file.
   service at `coffee.dev.local` as well as forwarding its port.
 
 Try: run it in the cluster, open the link the launch log prints, press Toggle,
-and watch the log. Then put a breakpoint in `poll` and debug it there.
+and watch the log. The page and the log both update on the change itself —
+`/api/events` streams it — so nothing asks again on a timer. Then put a
+breakpoint in `watch` and debug it there.

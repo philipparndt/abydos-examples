@@ -1,16 +1,18 @@
 {
-  "name": "in the cluster",
-  "type": "go",
-  "request": "launch",
-  "program": "${workspaceFolder}",
-  "cwd": "${workspaceFolder}",
-  "args": ["${workspaceFolder}/config/dev.json"],
-  "ideai.devPod": {
-    "context": "${currentContext}",
-    "allowedContexts": "k3c-*, k3d-*, *-local",
-    "namespace": "ideai-examples",
-    "files": ["config/dev.json"],
-    "port": 8080,
-    "ingressHost": "coffee.dev.local"
-  }
+  "args" : [
+    "${workspaceFolder}/config/dev.json"
+  ],
+  "ideai.devPod" : {
+    "context" : "Default",
+    "files" : [
+      "config/dev.json"
+    ],
+    "ingressHost" : "coffee-dev.rnd7.de",
+    "namespace" : "ideai-examples",
+    "port" : 8080
+  },
+  "name" : "in the cluster",
+  "program" : "${workspaceFolder}",
+  "request" : "launch",
+  "type" : "go"
 }

@@ -1,6 +1,5 @@
 {
   "name": "kitchen",
   "broker": "tcp://mosquitto.dev.svc:1883",
-  "machine": { "serial": "LM-000123", "model": "Linea Micra" },
-  "pollSeconds": 10
+  "machine": { "serial": "LM-000123", "model": "Linea Micra" }
 }

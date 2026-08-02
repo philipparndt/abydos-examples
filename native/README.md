@@ -16,5 +16,6 @@ or coldest reading and press debug.
 | c-hello | `cc -g -O0` |
 | cpp-hello | `c++ -g -O0 -std=c++20` |
 
-Debugging these in a cluster is not built yet: the development pod runs any
-static binary, but the debugger it starts is Delve, which is Go's.
+Odin and Zig also **run** in a cluster — see odin-hello's README for how a
+Linux binary gets built on a Mac. Debugging them there is not built yet: the
+debugger in the pod is Delve, which is Go's.
