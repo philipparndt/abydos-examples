@@ -22,6 +22,7 @@ make charts      # lint the chart
 | [go-service](go-service) | a backend with nothing in it but the shape of one: run it here, run it in a cluster, debug it there, profile it |
 | [smart-home-microservice](smart-home-microservice) | a service that will not start without its configuration file, with a page to look at — the awkward one to develop in a cluster |
 | [multi-tier](multi-tier) | somebody else's chart: an application and a web front end in one pod, a database and a cache beside them, a values file per stage |
+| [native/odin-hello](native/odin-hello) | odin, written the way Odin is written, built by make and debugged with LLDB |
 | [native/zig-hello](native/zig-hello) | zig, built by make and debugged with LLDB |
 | [native/rust-hello](native/rust-hello) | rust, the same |
 | [native/c-hello](native/c-hello) | C, the same |
@@ -40,7 +41,7 @@ that follows the current context cannot follow it onto production.
 |---|---|
 | go-service, smart-home-microservice | Go, and a local cluster for the cluster configurations |
 | multi-tier | Go, helm, and a local cluster |
-| native/* | zig, cargo, cc, c++ — whichever you want to try |
+| native/* | odin, zig, cargo, cc, c++ — whichever you want to try |
 | openscad | OpenSCAD, for the preview |
 | git-scenarios | git |
 

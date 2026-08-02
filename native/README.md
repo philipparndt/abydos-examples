@@ -1,6 +1,6 @@
 # native
 
-Four small programs in four languages, each with the same shape: something to
+Five small programs in five languages, each with the same shape: something to
 print, a function worth stepping into, and a `make build` that produces a
 binary with debug information in it.
 
@@ -10,6 +10,7 @@ or coldest reading and press debug.
 
 | project | built by |
 |---|---|
+| odin-hello | `odin build src -debug` |
 | zig-hello | `zig build` |
 | rust-hello | `cargo build` |
 | c-hello | `cc -g -O0` |
