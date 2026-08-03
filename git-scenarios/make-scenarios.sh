@@ -134,4 +134,60 @@ for i in $(seq 1 300); do
 done
 say large "300 commits"
 
+# 10. A file worth blaming: four people, months apart, one line still being
+# written. Every author and date is fixed, so the blame column reads the same
+# on every machine and can be compared against a screenshot.
+repo="$(new blame)"
+write_as() {
+	local who="$1" mail="$2" when="$3" message="$4"
+	GIT_AUTHOR_NAME="$who" GIT_AUTHOR_EMAIL="$mail" \
+	GIT_COMMITTER_NAME="$who" GIT_COMMITTER_EMAIL="$mail" \
+	GIT_AUTHOR_DATE="$when" GIT_COMMITTER_DATE="$when" \
+		git -C "$repo" commit -qam "$message"
+}
+
+cat > "$repo/thermostat.py" <<'PYTHON'
+class Thermostat:
+    def __init__(self, target):
+        self.target = target
+PYTHON
+git -C "$repo" add thermostat.py
+GIT_AUTHOR_DATE="2024-03-04T10:12:00+01:00" GIT_COMMITTER_DATE="2024-03-04T10:12:00+01:00" \
+	git -C "$repo" commit -qm "A thermostat that knows what it wants"
+
+cat >> "$repo/thermostat.py" <<'PYTHON'
+
+    def should_heat(self, current):
+        return current < self.target
+PYTHON
+write_as "Grace Hopper" "grace@example.com" "2024-07-19T16:40:00+02:00" \
+	"Heat when it is colder than asked for"
+
+# The line somebody came back to fix, months later, in the middle of what
+# somebody else wrote — which is the case blame exists for.
+python3 - "$repo/thermostat.py" <<'PYTHON'
+import sys
+path = sys.argv[1]
+text = open(path).read().replace(
+    "        return current < self.target",
+    "        # A degree of slack, or the relay chatters on the boundary.\n"
+    "        return current < self.target - 0.5",
+)
+open(path, "w").write(text)
+PYTHON
+write_as "Katherine Johnson" "katherine@example.com" "2025-11-02T08:05:00+01:00" \
+	"Stop the relay chattering on the boundary"
+
+cat >> "$repo/thermostat.py" <<'PYTHON'
+
+    def summary(self):
+        return f"target {self.target}"
+PYTHON
+write_as "Radia Perlman" "radia@example.com" "2026-06-15T13:20:00+02:00" \
+	"Say what the thermostat is set to"
+
+# And one line nobody has committed, which blame marks as such.
+printf '\n# TODO: read the target from the config\n' >> "$repo/thermostat.py"
+say blame "four authors over two years, one uncommitted line"
+
 printf '\nMade in %s\n' "$out"

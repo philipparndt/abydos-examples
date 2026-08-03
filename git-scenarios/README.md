@@ -1,6 +1,6 @@
 # git-scenarios
 
-Nine repositories, each stuck in a state worth looking at. They are made by a
+Ten repositories, each stuck in a state worth looking at. They are made by a
 script rather than committed, because a repository inside a repository is a
 submodule or a mess:
 
@@ -19,6 +19,7 @@ submodule or a mess:
 | `branches` | five branches to switch between |
 | `stashed` | two stashes, which are easy to forget |
 | `large` | 300 commits, for paging and for speed |
+| `blame` | one file, four authors, two years apart, and a line nobody has committed — blame mode |
 
 Open one of them as a project. They are throwaway: run the script again and
 they are all as they started.
