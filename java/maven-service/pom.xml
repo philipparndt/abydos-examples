@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  A Maven build with nothing unusual in it.
+
+  One dependency-free module that produces a runnable jar: `mvn package` leaves
+  target/maven-service-1.0.0.jar, and that jar is what gets pushed into a
+  development pod. The shade plugin is not here because there is nothing to
+  shade — the point of the example is the loop, not the packaging.
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>com.example</groupId>
+	<artifactId>maven-service</artifactId>
+	<version>1.0.0</version>
+	<packaging>jar</packaging>
+	<name>maven-service</name>
+
+	<properties>
+		<maven.compiler.release>21</maven.compiler.release>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<!-- Read by the editor as well as by the exec plugin. -->
+		<mainClass>com.example.api.Server</mainClass>
+	</properties>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>3.4.1</version>
+				<configuration>
+					<archive>
+						<manifest>
+							<!-- What `java -jar` needs, and what the pod runs. -->
+							<mainClass>com.example.api.Server</mainClass>
+						</manifest>
+					</archive>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>exec-maven-plugin</artifactId>
+				<version>3.3.0</version>
+				<configuration>
+					<mainClass>com.example.api.Server</mainClass>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+</project>

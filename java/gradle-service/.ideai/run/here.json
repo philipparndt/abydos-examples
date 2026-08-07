@@ -1,0 +1,9 @@
+{
+  "name": "here",
+  "type": "java",
+  "request": "launch",
+  "program": "com.example.tasks.Queue",
+  "args": ["3"],
+  "cwd": "${workspaceFolder}",
+  "env": { "STAGE": "local" }
+}

@@ -21,7 +21,16 @@ build: ## Build every example that has a build
 	@cd native/rust-hello && cargo build -q
 	@cd native/c-hello && $(MAKE) -s build
 	@cd native/cpp-hello && $(MAKE) -s build
+	@$(MAKE) -s java
 	@echo "==> everything builds"
+
+# Its own goal, because these two are the only examples that reach the network
+# to build: Maven and Gradle fetch their own plugins the first time, and a
+# `make build` that fails on a train should say which half it was.
+.PHONY: java
+java: ## Build the Java examples (needs a JDK, and the network once)
+	@cd java/maven-service && mvn -q -B package -DskipTests
+	@cd java/gradle-service && gradle -q --console=plain assemble
 
 .PHONY: charts
 charts: ## Check the charts
@@ -30,6 +39,7 @@ charts: ## Check the charts
 .PHONY: clean
 clean: ## Remove everything built and generated
 	@rm -rf git-scenarios/out */build native/*/build native/zig-hello/zig-out \
-		native/zig-hello/.zig-cache native/rust-hello/target
+		native/zig-hello/.zig-cache native/rust-hello/target \
+		java/maven-service/target java/gradle-service/build java/gradle-service/.gradle
 	@cd go-service && go clean
 	@echo "==> cleaned"

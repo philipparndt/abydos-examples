@@ -27,6 +27,8 @@ make charts      # lint the chart
 | [native/rust-hello](native/rust-hello) | rust, the same |
 | [native/c-hello](native/c-hello) | C, the same |
 | [native/cpp-hello](native/cpp-hello) | C++, the same |
+| [java/maven-service](java/maven-service) | Java and Maven: a service with no dependencies, run and debugged here and in a cluster |
+| [java/gradle-service](java/gradle-service) | Java and Gradle in the Kotlin DSL: a worker that would be over before you arrived, so the pod's JVM waits |
 | [openscad](openscad) | one parametric model — change a number, save, watch the preview |
 | [git-scenarios](git-scenarios) | nine repositories, each stuck in a state worth looking at |
 
@@ -56,6 +58,7 @@ that follows the current context cannot follow it onto production.
 | go-service, smart-home-microservice | Go, and a local cluster for the cluster configurations |
 | multi-tier | Go, helm, and a local cluster |
 | native/* | odin, zig, cargo, cc, c++ — whichever you want to try |
+| java/* | a JDK; `jdtls` for completion and problems, and the java-debug bundle for debugging |
 | openscad | OpenSCAD, for the preview |
 | git-scenarios | git |
 
@@ -68,8 +71,9 @@ kubectl delete namespace ideai-examples
 
 ## What is not here yet
 
-Languages that do not compile to a binary. Go, Zig, Rust, C, C++ and Odin all
-run *and debug* in a cluster: the binary is cross-compiled here, pushed into
-the pod, and held there by Delve or gdbserver depending on the language. JVM,
-Node and Python would need a different arrangement — their sources copied in
-and a debugger attached over their own protocol — and that is not built.
+Node and Python. Go, Zig, Rust, C, C++, Odin and Java all run *and debug* in a
+cluster, in two arrangements: a native binary is cross-compiled here, pushed
+into the pod and held there by Delve or gdbserver, and a jar is built here,
+pushed into a pod that has a JVM, and debugged over JDWP with the JVM
+suspended until the debugger arrives. Node and Python would need a third —
+sources copied in, and their own protocols — and that is not built.

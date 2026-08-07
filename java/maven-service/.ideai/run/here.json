@@ -1,0 +1,8 @@
+{
+  "name": "here",
+  "type": "java",
+  "request": "launch",
+  "program": "com.example.api.Server",
+  "cwd": "${workspaceFolder}",
+  "env": { "STAGE": "local" }
+}
