@@ -1,0 +1,12 @@
+{
+  "name": "in the cluster",
+  "type": "lldb",
+  "request": "launch",
+  "program": "${workspaceFolder}",
+  "cwd": "${workspaceFolder}",
+  "ideai.devPod": {
+    "context": "${currentContext}",
+    "allowedContexts": "k3c-*, k3d-*, *-local",
+    "namespace": "abydos-examples"
+  }
+}

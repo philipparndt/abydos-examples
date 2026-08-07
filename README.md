@@ -1,4 +1,4 @@
-# ideai-examples
+# abydos-examples
 
 Projects to develop *with*, rather than to read. Each one is small enough to
 take in at a glance and real enough to exercise something the editor does:
@@ -7,7 +7,7 @@ replacing one container of somebody else's chart, stepping through a language
 that is not Go, or opening a repository that is in an awkward state.
 
 Open one of them as a project. They all carry their own launch configurations
-in `.ideai/run`, so pressing run is the first thing you can do.
+in `.abydos/run`, so pressing run is the first thing you can do.
 
 ```sh
 make build       # everything that has a build
@@ -62,11 +62,11 @@ that follows the current context cannot follow it onto production.
 | openscad | OpenSCAD, for the preview |
 | git-scenarios | git |
 
-The cluster examples all use the namespace `ideai-examples`, so clearing up is
+The cluster examples all use the namespace `abydos-examples`, so clearing up is
 one command:
 
 ```sh
-kubectl delete namespace ideai-examples
+kubectl delete namespace abydos-examples
 ```
 
 ## What is not here yet

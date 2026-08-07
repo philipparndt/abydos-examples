@@ -27,7 +27,7 @@ brew install jdtls
 
 Completion, problems, go-to-declaration and find-usages come from that. The
 debugger needs one more piece, which is not a program but a bundle jdtls loads:
-see the note in ideai's README about `java-debug`.
+see the note in abydos's README about `java-debug`.
 
 ## The jar
 

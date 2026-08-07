@@ -1,3 +1,3 @@
-module github.com/philipparndt/ideai-examples/multi-tier
+module github.com/philipparndt/abydos-examples/multi-tier
 
 go 1.24

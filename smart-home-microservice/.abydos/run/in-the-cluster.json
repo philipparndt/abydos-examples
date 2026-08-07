@@ -1,0 +1,18 @@
+{
+  "args" : [
+    "${workspaceFolder}/config/dev.json"
+  ],
+  "ideai.devPod" : {
+    "context" : "Default",
+    "files" : [
+      "config/dev.json"
+    ],
+    "ingressHost" : "coffee-dev.rnd7.de",
+    "namespace" : "abydos-examples",
+    "port" : 8080
+  },
+  "name" : "in the cluster",
+  "program" : "${workspaceFolder}",
+  "request" : "launch",
+  "type" : "go"
+}
