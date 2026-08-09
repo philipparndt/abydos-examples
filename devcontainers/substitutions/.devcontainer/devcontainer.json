@@ -1,0 +1,45 @@
+{
+  // Everything the file is allowed to say ${...} about, in one file — plus the
+  // three fields that are handed to the runtime rather than interpreted.
+  //
+  // An unknown ${...} is left exactly as written, which is what VS Code does
+  // and the only answer that cannot corrupt a value nobody understood.
+  // ${containerEnv:...} is the one substitution that refuses instead: its value
+  // does not exist until the container is running, and a PATH quietly resolved
+  // to the empty string is a container that comes up and finds nothing.
+  "name": "Substitutions in ${localWorkspaceFolderBasename}",
+  "image": "alpine:3.21",
+
+  // The one place a file can put the checkout somewhere other than
+  // /workspaces/<name>. It has to be a bind of *this* project — a volume, or
+  // somebody else's directory, is refused, because the whole point is that the
+  // files stay on this machine where git and the editor can see them.
+  "workspaceMount": "source=${localWorkspaceFolder},target=/src,type=bind",
+  "workspaceFolder": "/src",
+
+  "containerEnv": {
+    "ABYDOS_HOST_PROJECT": "${localWorkspaceFolder}",
+    "ABYDOS_PROJECT": "${localWorkspaceFolderBasename}",
+    "ABYDOS_INSIDE": "${containerWorkspaceFolder}",
+    "ABYDOS_HOME": "${localEnv:HOME}",
+
+    // ${localEnv:NAME:fallback} — a variable this machine does not have becomes
+    // the fallback, which is how a file expects an optional setting without
+    // insisting on it.
+    "ABYDOS_TOKEN": "${localEnv:ABYDOS_EXAMPLE_TOKEN:no token on this machine}",
+
+    // Not a substitution anybody defines. It arrives inside as written.
+    "ABYDOS_UNKNOWN": "${somethingNobodyDefined}"
+  },
+
+  "remoteEnv": {
+    "ABYDOS_SHELL_SAW": "${containerWorkspaceFolderBasename}"
+  },
+
+  // tmpfs rather than a volume or a bind, so that running this example leaves
+  // nothing behind on the machine that ran it.
+  "mounts": ["target=/scratch,type=tmpfs"],
+
+  // Handed to the runtime verbatim, before the image name.
+  "runArgs": ["--hostname", "abydos-substitutions"]
+}

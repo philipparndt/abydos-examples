@@ -1,0 +1,7 @@
+{
+  // The other of the two. Nothing is wrong with this one either — the two
+  // together are the problem, because choosing between them is a question and
+  // this app has nowhere to ask it yet.
+  "name": "With a Go toolchain",
+  "image": "golang:1.24-alpine"
+}

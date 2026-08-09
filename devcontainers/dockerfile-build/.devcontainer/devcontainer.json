@@ -1,0 +1,31 @@
+{
+  // A container built here rather than pulled, which is the other half of how
+  // one is named and an entirely different code path.
+  //
+  // Every relative path in `build` is relative to *this file*, not to the
+  // project — which is why the Dockerfile is written as `Dockerfile` and the
+  // context has to reach up a level with `..` to see the checkout. Getting that
+  // backwards is the classic way a devcontainer stops building.
+  //
+  // The image is kept as abydos-devcontainer:dockerfile-build, so that a
+  // machine with several devcontainers on it does not rebuild one over another.
+  "name": "Built from a Dockerfile",
+  "build": {
+    "dockerfile": "Dockerfile",
+
+    // The project root, one level above .devcontainer — so that COPY can see
+    // tools/hello.sh.
+    "context": "..",
+
+    // Both of these reach the Dockerfile as --build-arg.
+    "args": {
+      "ALPINE": "3.21",
+      "EXTRA": "jq"
+    },
+
+    // The Dockerfile has a stage after this one which must not be reached.
+    // `abydos-hello` proves the context; `jq` proves the args; the absence of
+    // /etc/abydos-wrong-stage proves the target.
+    "target": "development"
+  }
+}

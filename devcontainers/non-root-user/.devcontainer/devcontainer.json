@@ -1,0 +1,24 @@
+{
+  // A shell that is not root, which is where file ownership on a bind mount
+  // goes wrong and where the two user fields stop looking like one field.
+  //
+  // They are handed to different commands, and the spec is right that they are
+  // two things: `containerUser` is what the container itself runs as, so it is
+  // `docker run -u`; `remoteUser` is what gets attached to it afterwards — a
+  // terminal, a language server, a build — so it is `docker exec -u`. Root
+  // creates the container and `vscode` works in it, which is the arrangement
+  // most published devcontainers have.
+  //
+  // `whoami` in the terminal says vscode. `docker inspect` of the container
+  // says root. Both are what this file asked for.
+  //
+  // mcr.microsoft.com/devcontainers/base:alpine-3.21 because `vscode` has to
+  // actually exist in the image, and this is the smallest official image that
+  // has it. `updateRemoteUserUID` — which is what makes files written inside
+  // land with this machine's ownership — is not honoured yet, so it is not
+  // written here rather than being written and quietly ignored.
+  "name": "Non-root user",
+  "image": "mcr.microsoft.com/devcontainers/base:alpine-3.21",
+  "containerUser": "root",
+  "remoteUser": "vscode"
+}

@@ -1,0 +1,9 @@
+{
+  // One of two, and the reason this project is refused. The third legal place
+  // for a devcontainer.json is .devcontainer/<anything>/devcontainer.json,
+  // which is how a project offers a choice of containers to work in.
+  //
+  // Nothing is wrong with this file. It is the plainest one in the repository.
+  "name": "Small",
+  "image": "alpine:3.21"
+}

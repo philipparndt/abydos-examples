@@ -1,0 +1,28 @@
+{
+  // Refused today, on purpose. This is the first of the two boundaries of the
+  // subset Abydos reads, and it is here so that the refusal is a thing you can
+  // watch happen rather than a paragraph in a backlog entry:
+  //
+  //   .devcontainer/devcontainer.json installs devcontainer features
+  //   (ghcr.io/devcontainers/features/github-cli:1), which this app does not
+  //   build — put what they provide into the image or the Dockerfile the file
+  //   names.
+  //
+  // `features` is a package manager with its own registry, its own options and
+  // its own installation order. Starting the container while quietly skipping
+  // it would produce exactly the toolchain somebody did not ask for, missing
+  // exactly the tools they opened the project for — which does not look like an
+  // unsupported file, it looks like a broken editor.
+  //
+  // The image below is real and the features below are real, so this is what
+  // `devcontainer up` would build. When Abydos learns features, this is the
+  // fixture it learns against — step 4 of 0424 in the Abydos backlog.
+  "name": "Features, which this app does not build",
+  "image": "mcr.microsoft.com/devcontainers/base:alpine-3.21",
+  "features": {
+    "ghcr.io/devcontainers/features/github-cli:1": {},
+    "ghcr.io/devcontainers/features/go:1": {
+      "version": "1.24"
+    }
+  }
+}
