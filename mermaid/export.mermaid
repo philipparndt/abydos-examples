@@ -1,0 +1,24 @@
+%% What happens between the menu item and the picture appearing in the tree.
+%% This file is a .mermaid rather than a .mmd, which is the other extension the
+%% editor draws — the same pane, the same menu, a different suffix.
+sequenceDiagram
+    autonumber
+    actor You
+    participant Pane as Preview pane
+    participant Export as DiagramExport
+    participant Web as The web view
+    You->>Pane: Export, PNG
+    Pane->>Export: the text on screen, and this file's name
+    Export->>Export: is export.png ours to overwrite?
+    alt somebody else's picture is already there
+        Export-->>Pane: nothing written, and which file stopped it
+        Pane-->>You: one sentence, no picture
+    else ours, or nothing there at all
+        Export->>Web: render the diagram
+        Web-->>Export: an SVG with its own size
+        Export->>Web: rasterise it at twice the size
+        Web-->>Export: the bytes of a PNG
+        Export->>Export: stamp it, so the next export may replace it
+        Export-->>Pane: export.png
+        Pane-->>You: a toast, and the file selected in the tree
+    end

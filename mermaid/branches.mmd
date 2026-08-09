@@ -1,0 +1,13 @@
+%% The shape git-scenarios/out/merge-conflict is built into, drawn by Mermaid's
+%% own git renderer — which shares nothing with the diagrams beside it.
+%% Commit ids are kept short on purpose: Mermaid writes them at forty-five
+%% degrees under the dot, and a sentence there covers the branch's own label.
+gitGraph
+    commit id: "first"
+    branch feature
+    checkout feature
+    commit id: "theirs"
+    checkout main
+    commit id: "ours"
+    merge feature id: "conflict"
+    commit id: "resolved"

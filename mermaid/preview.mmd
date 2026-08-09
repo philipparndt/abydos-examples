@@ -1,0 +1,43 @@
+%% The pieces behind a preview pane, and which of them knows about a web view.
+classDiagram
+    class DiagramPaneView {
+        +NSImage image
+        +String notice
+        +export(DiagramFormat)
+    }
+    class PlantUMLPreviewView {
+        +show(String source)
+    }
+    class MermaidPreviewView {
+        +show(String source)
+        +Bool isReadyToExport
+    }
+    class WebRenderer {
+        -WKWebView view
+        +call(String, arguments) async
+        +stop()
+    }
+    class MermaidRenderer {
+        +draw(String, DiagramFormat) async
+        +Bool isWarm
+    }
+    class Mermaid {
+        <<pure>>
+        +page(bundle) String
+        +sized(svg) String
+        +fault(message, line) DiagramFault
+    }
+    class DiagramExport {
+        <<rules>>
+        +destinations(for, format, diagrams) URL[]
+        +refusal(toWrite) String?
+    }
+
+    DiagramPaneView <|-- PlantUMLPreviewView
+    DiagramPaneView <|-- MermaidPreviewView
+    MermaidPreviewView --> MermaidRenderer : draws with
+    MermaidPreviewView --> DiagramExport : exports through
+    MermaidRenderer *-- WebRenderer : owns one
+    MermaidRenderer ..> Mermaid : asks what things mean
+    DiagramExport ..> MermaidRenderer : for the picture
+    PlantUMLPreviewView --> DiagramExport : exports through

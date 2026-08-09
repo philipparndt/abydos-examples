@@ -1,0 +1,17 @@
+%% How a .mmd file becomes the picture beside it.
+%% Nothing on this path is installed and nothing is fetched: the renderer is a
+%% web view inside the app, with mermaid.min.js inlined into its one page.
+flowchart TD
+    Typing[Somebody types in the editor] --> Pause{Quiet for 0.4 seconds?}
+    Pause -- no, still typing --> Typing
+    Pause -- yes --> Draw[MermaidRenderer.draw]
+    Draw --> Bundle[(mermaid.min.js<br/>3.57 MB, in the app)]
+    Bundle --> Parsed{Does it parse?}
+    Parsed -- no --> Said[Name the line<br/>and say the complaint]
+    Parsed -- yes --> Flatten[Inline every style<br/>bake the text and the arrowheads]
+    Flatten --> Pane[The drawing, on white paper]
+    Pane --> Asked{Export, and as what?}
+    Asked -- SVG --> Drawing[render.svg beside this file]
+    Asked -- PNG --> Raster[Rasterise at 2x through a canvas]
+    Raster --> Picture[render.png beside this file]
+    Said --> Nothing[Nothing is written]

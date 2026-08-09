@@ -1,0 +1,34 @@
+%% What a project keeps beside itself in .abydos, as things and their counts.
+erDiagram
+    PROJECT ||--o{ RUN_CONFIGURATION : "keeps in .abydos/run"
+    PROJECT ||--o| TOOLS : "names images in .abydos/tools.json"
+    PROJECT ||--o| SESSION : "remembers, per machine"
+    PROJECT ||--o{ SUBPROJECT : "can be opened as"
+    RUN_CONFIGURATION ||--o| CLUSTER : "may run in"
+    SESSION ||--o{ BREAKPOINT : holds
+    SESSION ||--o{ OPEN_FILE : holds
+    DIAGRAM ||--o{ PICTURE : "is exported to"
+    PROJECT ||--o{ DIAGRAM : contains
+
+    PROJECT {
+        string name
+        string root
+        bool committed
+    }
+    RUN_CONFIGURATION {
+        string name
+        string kind
+        string allowedContexts
+    }
+    SESSION {
+        string activeFile
+        int caretLine
+    }
+    DIAGRAM {
+        string extension
+        string tool
+    }
+    PICTURE {
+        string format
+        bool stamped
+    }

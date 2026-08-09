@@ -1,0 +1,22 @@
+%% A file open in the editor, and the states it is in.
+%% A state diagram is laid out by Mermaid itself rather than by anything the
+%% flowchart shares, which is why it is here: it is a different drawing.
+stateDiagram-v2
+    [*] --> Clean: opened
+    Clean --> Edited: a keystroke
+    Edited --> Clean: saved
+    Edited --> Edited: auto-save is off
+
+    state "Changed underneath" as Elsewhere {
+        [*] --> Noticed: git checkout, or another editor
+        Noticed --> Reloaded: nothing unsaved here
+        Noticed --> Asked: something unsaved here
+        Asked --> Reloaded: take theirs
+        Asked --> Kept: keep mine
+    }
+
+    Clean --> Elsewhere
+    Edited --> Elsewhere
+    Reloaded --> Clean
+    Kept --> Edited
+    Clean --> [*]: closed
