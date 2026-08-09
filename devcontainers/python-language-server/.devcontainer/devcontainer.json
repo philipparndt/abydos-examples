@@ -1,0 +1,20 @@
+{
+	// A devcontainer that carries the project's language server.
+	//
+	// Every other example here proves a container comes up. This one proves
+	// something is *working inside it*: open the project, open main.py, and
+	// ⌘-click `Reading` — the definition opens stations/reading.py, and the
+	// answer came from a pyright that is not on this machine and cannot be.
+	//
+	// Python and pyright deliberately, rather than Go and gopls: a hover that
+	// works is only evidence if there is no copy of the server on the host to
+	// have answered instead. Most machines with a Go checkout have gopls in
+	// ~/go/bin; almost nobody has pyright unless they went and installed it.
+	//
+	// Built here rather than pulled: .devcontainer/Dockerfile says why the
+	// server needs Python and Node beside it, and pins the version of it.
+	"name": "Python, with its language server in the container",
+	"build": {
+		"dockerfile": "Dockerfile"
+	}
+}

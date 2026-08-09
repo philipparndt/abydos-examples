@@ -1,0 +1,17 @@
+# Here for two reasons, and neither of them is packaging.
+#
+# It is one of the root markers Abydos looks for when it decides where a Python
+# language server should be rooted, so without it the server would be rooted
+# wherever the project happened to open. And it is where pyright itself is
+# configured, which is worth showing: the settings below are read inside the
+# container, out of the checkout that is bind-mounted into it.
+[project]
+name = "weather-stations"
+version = "0.1.0"
+description = "Three weather stations, read by a language server that is not on this machine"
+requires-python = ">=3.12"
+
+[tool.pyright]
+include = ["main.py", "stations"]
+typeCheckingMode = "standard"
+reportMissingImports = "error"
