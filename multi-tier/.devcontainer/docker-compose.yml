@@ -1,0 +1,48 @@
+# The four halves of multi-tier, on this machine instead of in a cluster.
+#
+# The same images and the same environment the chart under deploy/ gives them,
+# so that what runs here and what runs there differ in one thing only: the
+# orchestrator. `app` is the service the devcontainer attaches to, which is why
+# it does nothing but stay up — the toolchain is inside it and the build is
+# something somebody types.
+
+services:
+  app:
+    image: golang:1.24-alpine
+    # A devcontainer's service is not started to run the program; it is started
+    # so that there is somewhere to open a shell. The build is a thing somebody
+    # does in that shell.
+    command: sleep infinity
+    working_dir: /workspaces/multi-tier
+    volumes:
+      - ..:/workspaces/multi-tier:cached
+    environment:
+      STAGE: dev
+      DATABASE_URL: postgres://app:from-values@database:5432/app?sslmode=disable
+      VALKEY_ADDR: cache:6379
+    ports:
+      - "127.0.0.1:8080:8080"
+    depends_on:
+      - database
+      - cache
+
+  web:
+    image: golang:1.24-alpine
+    command: sleep infinity
+    working_dir: /workspaces/multi-tier
+    volumes:
+      - ..:/workspaces/multi-tier:cached
+    environment:
+      API_URL: http://app:8080
+    ports:
+      - "127.0.0.1:3000:3000"
+
+  database:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: app
+      POSTGRES_USER: app
+      POSTGRES_PASSWORD: from-values
+
+  cache:
+    image: valkey/valkey:8-alpine

@@ -1,0 +1,14 @@
+{
+  // The plainest devcontainer there is: one image, and nothing else.
+  //
+  // Everything a devcontainer needs in order to be useful is already implied —
+  // the checkout is bind-mounted, a shell starts in it, and the Go toolchain is
+  // the one in the image rather than the one on this machine. Open the project
+  // and choose View ▸ New Terminal in Container, then `go build ./...`.
+  //
+  // golang:1.24-alpine rather than mcr.microsoft.com/devcontainers/go, which is
+  // the same toolchain and a fifth of the download: anybody who opens this
+  // example pulls whatever it names.
+  "name": "go-service",
+  "image": "golang:1.24-alpine"
+}

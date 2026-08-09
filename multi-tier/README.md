@@ -20,3 +20,12 @@ helm-secrets and set `"secrets": true` in the configuration, which runs
 Try: run **app in the cluster**, open the forwarded link, then run **web in the
 cluster** and watch the app container go back to the chart's image while the
 web container becomes yours. Put a breakpoint in `orders` and load the page.
+
+## In a container
+
+`.devcontainer/` is the one example that is **refused** on purpose. Four things
+that only mean anything together is the shape `dockerComposeFile` exists for,
+and Abydos says so by name rather than starting one image and calling it this
+project. The compose file beside it is real — `docker compose -f
+.devcontainer/docker-compose.yml up` brings the four up — and it is the fixture
+compose will be built against. `../devcontainers` says what the others show.

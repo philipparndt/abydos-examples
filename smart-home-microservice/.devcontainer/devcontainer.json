@@ -1,0 +1,23 @@
+{
+  // The same toolchain as go-service, and a service that actually serves.
+  //
+  // `forwardPorts` publishes both of the ports this one listens on, so a
+  // `go run . config/dev.json` inside the container is reachable from the
+  // browser on this machine: 8080 is the page, 6060 is net/http/pprof.
+  //
+  // The ports are published on 127.0.0.1 only — a devcontainer's port is for
+  // the person at this keyboard, and every interface is a decision nobody made.
+  "name": "smart-home-microservice",
+  "image": "golang:1.24-alpine",
+  "forwardPorts": [8080, 6060],
+
+  // The two environments are not the same thing, and the spec is right that
+  // they are not: `containerEnv` is baked in when the container is created,
+  // `remoteEnv` is added to each shell and tool started inside it afterwards.
+  "containerEnv": {
+    "STAGE": "container"
+  },
+  "remoteEnv": {
+    "SMART_HOME_CONFIG": "config/dev.json"
+  }
+}

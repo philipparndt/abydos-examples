@@ -1,0 +1,22 @@
+{
+  // This one is refused today, on purpose, and that is what it is here for.
+  //
+  // multi-tier is four things that only mean anything together — an
+  // application, a web front end, a database and a cache — which is the shape
+  // `dockerComposeFile` exists for and the shape a single image cannot have.
+  // So the file is written the way the project actually wants it, and Abydos
+  // says so rather than starting something half-configured:
+  //
+  //   .devcontainer/devcontainer.json builds this project with Docker Compose
+  //   (docker-compose.yml), which this app does not run — a single image or
+  //   build.dockerfile is what it can start.
+  //
+  // The compose file beside this one is real: `docker compose up` in
+  // .devcontainer brings the four up. When Abydos learns compose, this is the
+  // fixture it learns against — see 0424 in the Abydos backlog.
+  "name": "multi-tier",
+  "dockerComposeFile": "docker-compose.yml",
+  "service": "app",
+  "runServices": ["app", "database", "cache"],
+  "workspaceFolder": "/workspaces/multi-tier"
+}
