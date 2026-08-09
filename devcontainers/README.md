@@ -6,7 +6,9 @@ each. The projects above this folder — `go-service`, `smart-home-microservice`
 the ones that would be noise inside a real project, and the ones that are
 refused.
 
-Open any of them as a project and choose **View ▸ New Terminal in Container**.
+Open any of them as a project and choose **View ▸ New Terminal in Container**,
+or the same entry in the menu behind the `+` at the end of the terminal tabs —
+which is where a project offering more than one container shows all of them.
 
 ```sh
 ./devcontainers/check.sh    # bring up everything that is meant to come up
@@ -21,6 +23,9 @@ Open any of them as a project and choose **View ▸ New Terminal in Container**.
 | [dockerfile-build](dockerfile-build) | `build.dockerfile`, `context`, `args` and `target`, each checkable from inside | built here from `alpine:3.21` (8 MB + `jq`) |
 | [non-root-user](non-root-user) | `containerUser` and `remoteUser` being the two different things they are | `mcr.microsoft.com/devcontainers/base:alpine-3.21` (735 MB) |
 | [substitutions](substitutions) | every `${...}` the reader answers, plus `workspaceMount`, `mounts`, `runArgs` | `alpine:3.21` (8 MB) |
+| [post-create](post-create) | `postCreateCommand`, slow enough to watch being reported, installing a package the image does not carry | `alpine:3.21` (8 MB) |
+| [post-create-fails](post-create-fails) | the same, with a command that exits 3 partway and a `postStartCommand` that must not run after it | `alpine:3.21` (8 MB) |
+| [two-containers](two-containers) | two `devcontainer.json`, offered as two menu entries and up at the same time | `alpine:3.21` + `golang:1.24-alpine` |
 
 Everything is pinned, and Alpine wherever an Alpine exists. `go-service` names
 `golang:1.24-alpine` rather than `mcr.microsoft.com/devcontainers/go` on purpose:
@@ -36,18 +41,20 @@ sentence somebody can act on — because a container quietly started without the
 half of the file that was not understood does not look like an unsupported
 file, it looks like a broken editor.
 
-| project | what it says | what lifts it |
+| project | what it says | what would lift it |
 |---|---|---|
 | [../multi-tier](../multi-tier) | `dockerComposeFile`, naming the compose file | somebody teaching Abydos compose |
-| [features](features) | `features`, naming the first one it found | step 4 of 0424 |
-| [post-create](post-create) | `postCreateCommand` | step 5 of 0424 |
-| [post-create-fails](post-create-fails) | `postCreateCommand` — the same sentence, a command that fails | step 5 of 0424 |
-| [two-containers](two-containers) | more than one `devcontainer.json`, naming both | somewhere to ask which one |
+| [features](features) | `features`, naming the first one it found | somebody teaching Abydos to build them |
 
-They are the fixtures those steps will be built against, which is why the parts
-that are refused today are nevertheless written to work: `multi-tier`'s compose
-file brings four services up, `features` names features that exist, and both
-`post-create` scripts run — one slowly, one into a failure with an exit code.
+They are the fixtures those would be built against, which is why the parts that
+are refused are nevertheless written to work: `multi-tier`'s compose file brings
+four services up and `features` names features that exist.
+
+**Three of these used to be here and are not any more**, and both halves of that
+are the point — a refusal is a decision, not a permanent property of a file.
+`post-create` and `post-create-fails` were refused until the lifecycle commands
+ran, and `two-containers` until there was a menu to ask which of its containers
+somebody meant. None of the three files changed; Abydos did.
 
 ## What is not covered here
 

@@ -1,18 +1,13 @@
 {
-  // Refused today, on purpose. The lifecycle commands are the largest of the
-  // three refusals and the one with the most behind it:
-  //
-  //   .devcontainer/devcontainer.json has a postCreateCommand, and this app
-  //   does not run the lifecycle commands yet — the container would come up
-  //   without whatever that command installs.
-  //
-  // Reading `postCreateCommand` and quietly not running it would have been the
-  // worst of the three options: `go mod download` and `npm ci` live here, and a
-  // container that came up without them has tools missing for a reason nothing
-  // on screen explains.
+  // Run, since 2026-08-09. This was refused until then, and the refusal was
+  // deliberate rather than a gap: reading `postCreateCommand` and quietly not
+  // running it would have been the worst of the three options, because `go mod
+  // download` and `npm ci` live here and a container that came up without them
+  // has tools missing for a reason nothing on screen explains. The file did not
+  // change; Abydos did.
   //
   // The command below takes long enough to need saying on screen — which is the
-  // progress reporting step 5 of 0424 asks for, and why it is slow deliberately
+  // progress reporting step 5 of 0424 asked for, and why it is slow deliberately
   // rather than by accident.
   "name": "A container that installs its tools after it is created",
   "image": "alpine:3.21",

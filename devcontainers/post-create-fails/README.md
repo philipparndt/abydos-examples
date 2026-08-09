@@ -1,23 +1,30 @@
 # post-create-fails
 
-The same refusal as `post-create` beside it — the sentence names the field it
-found, not the command, so both files produce it word for word:
+The other half of `post-create` beside it: the same shape, with a command that
+does not succeed. **Abydos runs it, and says which command failed and what it
+said**:
 
-> .devcontainer/devcontainer.json has a postCreateCommand, and this app does not
-> run the lifecycle commands yet — the container would come up without whatever
-> that command installs.
+> post-create-fails's postCreateCommand exited 3: error: no such package:
+> a-package-that-does-not-exist. The container was removed and nothing after it
+> was run — fix `sh .devcontainer/post-create.sh` in the devcontainer.json and
+> open the project again.
 
-They are two fixtures rather than one because of what happens *after* step 5 of
-0424 lands. This one's command fails, three steps in, with a message on stderr
-and an exit code of 3:
+The command fails three steps in, with a message on stderr and an exit code of
+3:
 
 ```sh
 docker run --rm -v "$PWD:/w" -w /w alpine:3.21 sh .devcontainer/post-create.sh; echo "exit $?"
 ```
 
-Two things it is there to pin down. A failure has to be reported as *this
-command, this output* — "the container could not be created" is the message
-that sends somebody looking for a log nobody kept. And the `postStartCommand`
-below it must not run at all: a container that went on to start what it was
-told to start, after its tools failed to install, is the half-built state the
-refusal exists to avoid.
+Three things it is there to pin down. A failure has to be reported as *this
+command, this output* — "the container could not be created" is the message that
+sends somebody looking for a log nobody kept. The line quoted is the last one on
+**standard error**, because a command that fails writes the reason there and its
+progress to the other stream: the last line of standard output is "step 3 of 3",
+which says how far it got and not what went wrong. And the `postStartCommand`
+below it must not run at all, and the container is removed rather than left
+running — a container that went on to start what it was told to start, after its
+tools failed to install, is the half-built state this exists to prevent.
+
+**This project was refused until 2026-08-09**, when the lifecycle commands
+started running. The file did not change; Abydos did.

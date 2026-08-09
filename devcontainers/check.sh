@@ -84,13 +84,47 @@ probe devcontainers/non-root-user mcr.microsoft.com/devcontainers/base:alpine-3.
 probe devcontainers/substitutions alpine:3.21 /src "" \
 	'test -f README.md && echo "the checkout is at $(pwd)"'
 
+# The lifecycle command, run the way Abydos runs it: inside the container that
+# is already up, at the workspace folder. The package it installs is one the
+# image deliberately does not carry, so finding it afterwards is the command
+# having really run.
+probe devcontainers/post-create alpine:3.21 /workspaces/post-create "" \
+	'sh .devcontainer/post-create.sh >/dev/null && jq --version && echo "jq is here, and the image has none"'
+
+# Its harder half, which is meant to fail: exit 3, and the reason on standard
+# error rather than on standard output, which is what Abydos quotes.
+printf '\n==> devcontainers/post-create-fails (alpine:3.21, expected to fail)\n'
+fails_name=abydos-probe-post-create-fails
+docker rm -f "$fails_name" >/dev/null 2>&1 || true
+docker run -d --name "$fails_name" \
+	--entrypoint /bin/sh \
+	-v "$here/post-create-fails:/workspaces/post-create-fails" \
+	-w /workspaces/post-create-fails \
+	alpine:3.21 \
+	-c "trap 'exit 0' TERM INT; while true; do sleep 86400 & wait \$!; done" >/dev/null
+fails_said=$(docker exec -w /workspaces/post-create-fails "$fails_name" \
+	/bin/sh -c 'sh .devcontainer/post-create.sh 2>&1 >/dev/null' || true)
+docker exec -w /workspaces/post-create-fails "$fails_name" \
+	/bin/sh -c 'sh .devcontainer/post-create.sh >/dev/null 2>&1' && fails_status=0 || fails_status=$?
+docker rm -f "$fails_name" >/dev/null
+if [ "$fails_status" -eq 3 ]; then
+	echo "exited 3, saying: $(echo "$fails_said" | tail -n 1)"
+else
+	echo "!!! devcontainers/post-create-fails exited $fails_status, and 3 is what it is for"
+	failed=1
+fi
+
+# Two containers for one project, which Abydos offers as two menu entries and
+# can have up at the same time. Both, because the point is that they are two.
+probe devcontainers/two-containers alpine:3.21 /workspaces/two-containers "" \
+	'! command -v go >/dev/null && echo "the small one, with no toolchain in it"'
+probe devcontainers/two-containers golang:1.24-alpine /workspaces/two-containers "" \
+	'echo "the other one, with $(go version)"'
+
 echo
 echo "==> refused on purpose, so there is nothing to bring up"
 echo "    multi-tier                     dockerComposeFile"
 echo "    devcontainers/features         features"
-echo "    devcontainers/post-create      postCreateCommand"
-echo "    devcontainers/post-create-fails postCreateCommand"
-echo "    devcontainers/two-containers   two devcontainer.json"
 
 # The compose file is refused by Abydos and still has to be a real one.
 if docker compose -f "$root/multi-tier/.devcontainer/docker-compose.yml" config -q; then

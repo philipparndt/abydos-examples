@@ -1,11 +1,7 @@
 {
-  // Refused today for the same reason post-create beside it is refused, and it
-  // produces the same sentence word for word, because the refusal names the
-  // field it found rather than guessing at what the command would have done:
-  //
-  //   .devcontainer/devcontainer.json has a postCreateCommand, and this app
-  //   does not run the lifecycle commands yet — the container would come up
-  //   without whatever that command installs.
+  // Run, since 2026-08-09, the same as post-create beside it. Both were refused
+  // until then, in one sentence naming the field rather than guessing at what
+  // the command would have done; what changed is Abydos, not these files.
   //
   // The two are not the same fixture. This one's command fails on purpose,
   // three steps in, and that is the harder half of step 5 of 0424: a lifecycle
@@ -15,8 +11,8 @@
   // The `postStartCommand` below is the second half of that. It runs after
   // postCreateCommand and so must not run at all when postCreateCommand has
   // failed — a container that went on to start what it was told to start after
-  // its tools failed to install is the state this whole refusal exists to
-  // avoid.
+  // its tools failed to install is the state this exists to prevent. The
+  // container is removed rather than left running, for the same reason.
   "name": "A postCreateCommand that fails on purpose",
   "image": "alpine:3.21",
   "postCreateCommand": "sh .devcontainer/post-create.sh",
