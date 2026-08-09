@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="590" height="330" viewBox="-0.5 -0.5 590 330" content="&lt;mxfile host=&quot;Electron&quot; agent=&quot;abydos-examples&quot; version=&quot;31.1.8&quot; type=&quot;device&quot;&gt;&#xa;  &lt;diagram id=&quot;architecture-1&quot; name=&quot;Repository&quot;&gt;1ZhBb5swFIB/DcdVgIHkumRdd+kph509eANLxkbOo0B/fe3iEFxnVTRpkzmBP78825+tF4uIHNvxSdGueZYV8CiNqzEi36I0TZI41Q9Dppnsiv0MasUqG3QFJ/YKFsaW9qyCsxOIUnJknQtLKQSU6DCqlBzcsN+Su6N2tAYPnErKffqTVdjMdJ/HV/4DWN3gsmDb09JLsAXnhlZyWCHyGMVfI/MeR+SopEQHXTra8QjcSL34svmi9Pt98csSFAj8uxTU5nihvLdi6K+pkucvMNK243qH5jXidBGnZC8qML/XGQ9DwxBOHS1N76CPimYNtly3Ev1qs4NCGP846eSjtI+TfgLZAqpJt22WzC50cpvDdScX1qx28bK71B6eekn8mTXNrbj7nKae045Tgb22okfYgs8k94Uu7P8LJZ7QFlRLdX+oPpcyF6bQzBNaKTowGaxPsg/aZ+5X0fmvCykToKJUZ4ylfsZCYsNEvYkqkBZBSS48yeQh32nyfDBhwtwgGjDT6LptVIXABO88wUnyQKxgc4Kp0BU37sWgGCKIbZSKwCSDf+PyPEKlr6q2KRU2spaC8scrPbimPasmwedO9XiyVyW410CkqgZcX2PudK+AU2Qv7qD/WGS6FZEkcJFkKyKzwEVmIYpMb4jMAxeZhyiS3BBZBC6yCFFkdkPkLgSR73z1vcbGrb6AvfM3&lt;/diagram&gt;&#xa;&lt;/mxfile&gt;&#xa;">
+<rect x="0" y="0" width="590" height="330" fill="#ffffff"/>
+<g font-family="Helvetica" font-size="12" text-anchor="middle" fill="#000000">
+<path d="M 160 90 L 160 120 L 115 120 L 115 150" fill="none" stroke="#000000" stroke-miterlimit="10"/>
+<path d="M 160 90 L 160 120 L 285 120 L 285 150" fill="none" stroke="#000000" stroke-miterlimit="10"/>
+<path d="M 160 90 L 160 120 L 455 120 L 455 150" fill="none" stroke="#000000" stroke-miterlimit="10"/>
+<path d="M 115 200 L 115 230 L 115 230 L 115 260" fill="none" stroke="#000000" stroke-miterlimit="10"/>
+<path d="M 285 200 L 285 230 L 285 230 L 285 260" fill="none" stroke="#000000" stroke-miterlimit="10"/>
+<path d="M 455 200 L 455 230 L 455 230 L 455 260" fill="none" stroke="#000000" stroke-miterlimit="10"/>
+<rect x="40" y="40" width="240" height="50" fill="#ffffff" stroke="#000000"/>
+<text x="160" y="69">abydos-examples</text>
+<rect x="40" y="150" width="150" height="50" fill="#ffffff" stroke="#000000"/>
+<text x="115" y="179">plantuml/</text>
+<rect x="210" y="150" width="150" height="50" fill="#ffffff" stroke="#000000"/>
+<text x="285" y="179">mermaid/</text>
+<rect x="380" y="150" width="150" height="50" fill="#ffffff" stroke="#000000"/>
+<text x="455" y="179">drawio/</text>
+<rect x="40" y="260" width="150" height="50" fill="#ffffff" stroke="#000000"/>
+<text x="115" y="289">a container, or nothing</text>
+<rect x="210" y="260" width="150" height="50" fill="#ffffff" stroke="#000000"/>
+<text x="285" y="289">3.57 MB in the app</text>
+<rect x="380" y="260" width="150" height="50" fill="#ffffff" stroke="#000000"/>
+<text x="455" y="289">11.3 MB, and unwritten</text>
+</g>
+</svg>

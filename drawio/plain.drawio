@@ -1,0 +1,30 @@
+<mxfile host="Electron" agent="abydos-examples" version="31.1.8" type="device">
+  <diagram id="plain-1" name="Preview"><mxGraphModel dx="1102" dy="768" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+  <root>
+    <mxCell id="0" />
+    <mxCell id="1" parent="0" />
+    <mxCell id="v1" value="a .drawio in the tree" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+      <mxGeometry x="120" y="80" width="200" height="60" as="geometry" />
+    </mxCell>
+    <mxCell id="v2" value="GraphViewer, in a WKWebView with nothing fetched" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+      <mxGeometry x="120" y="200" width="200" height="80" as="geometry" />
+    </mxCell>
+    <mxCell id="v3" value="a picture in the preview pane" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+      <mxGeometry x="120" y="360" width="200" height="60" as="geometry" />
+    </mxCell>
+    <mxCell id="v4" value="architecture.png beside the file" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+      <mxGeometry x="120" y="480" width="200" height="60" as="geometry" />
+    </mxCell>
+    <mxCell id="e1" value="the XML, decompressed" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" edge="1" parent="1" source="v1" target="v2">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <mxCell id="e2" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" edge="1" parent="1" source="v2" target="v3">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <mxCell id="e3" value="Export &#9656; PNG" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" edge="1" parent="1" source="v3" target="v4">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+  </root>
+</mxGraphModel>
+</diagram>
+</mxfile>
