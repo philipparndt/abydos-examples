@@ -1,30 +1,34 @@
-<mxfile host="Electron" agent="abydos-examples" version="31.1.8" type="device">
-  <diagram id="plain-1" name="Preview"><mxGraphModel dx="1102" dy="768" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
-  <root>
-    <mxCell id="0" />
-    <mxCell id="1" parent="0" />
-    <mxCell id="v1" value="a .drawio in the tree" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-      <mxGeometry x="120" y="80" width="200" height="60" as="geometry" />
-    </mxCell>
-    <mxCell id="v2" value="GraphViewer, in a WKWebView with nothing fetched" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-      <mxGeometry x="120" y="200" width="200" height="80" as="geometry" />
-    </mxCell>
-    <mxCell id="v3" value="a picture in the preview pane" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-      <mxGeometry x="120" y="360" width="200" height="60" as="geometry" />
-    </mxCell>
-    <mxCell id="v4" value="architecture.png beside the file" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-      <mxGeometry x="120" y="480" width="200" height="60" as="geometry" />
-    </mxCell>
-    <mxCell id="e1" value="the XML, decompressed" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" edge="1" parent="1" source="v1" target="v2">
-      <mxGeometry relative="1" as="geometry" />
-    </mxCell>
-    <mxCell id="e2" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" edge="1" parent="1" source="v2" target="v3">
-      <mxGeometry relative="1" as="geometry" />
-    </mxCell>
-    <mxCell id="e3" value="Export &#9656; PNG" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" edge="1" parent="1" source="v3" target="v4">
-      <mxGeometry relative="1" as="geometry" />
-    </mxCell>
-  </root>
-</mxGraphModel>
-</diagram>
+<mxfile host="editor" agent="abydos-examples">
+  <diagram id="plain-1" name="Preview">
+    <mxGraphModel dx="2786" dy="460" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="v1" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="a .drawio in the tree" vertex="1">
+          <mxGeometry height="60" width="200" x="120" y="80" as="geometry" />
+        </mxCell>
+        <mxCell id="v2" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="GraphViewer, in a WKWebView with nothing fetched" vertex="1">
+          <mxGeometry height="80" width="200" x="120" y="200" as="geometry" />
+        </mxCell>
+        <mxCell id="v3" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="a picture in the preview pane" vertex="1">
+          <mxGeometry height="60" width="200" x="120" y="360" as="geometry" />
+        </mxCell>
+        <mxCell id="v4" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="architecture.png beside the file" vertex="1">
+          <mxGeometry height="60" width="200" x="120" y="480" as="geometry" />
+        </mxCell>
+        <mxCell id="e1" edge="1" parent="1" source="v1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" target="v2" value="the XML, decompressed">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e2" edge="1" parent="1" source="v2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" target="v3" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e3" edge="1" parent="1" source="v3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" target="v4" value="Export ▸ PNG">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="cBlTctT8y9oJ3vH4uogS-1" parent="1" style="ellipse;whiteSpace=wrap;html=1;shapeInside=1;" value="" vertex="1">
+          <mxGeometry height="130" width="140" x="430" y="150" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
 </mxfile>
