@@ -1,0 +1,34 @@
+' What "debug in the cluster" is, between pressing it and stopping somewhere.
+'
+' Needs Graphviz, like cluster.puml. It describes what the native examples in
+' this repository actually do — odin-hello, zig-hello, rust-hello and the two
+' C ones all take this path.
+
+@startuml
+title Debug in the cluster, from the press to the breakpoint
+
+skinparam shadowing false
+
+[*] --> Building : press debug
+
+Building --> Pushing : a binary for the pod's architecture
+Building --> [*] : it did not compile
+
+Pushing --> Waiting : copied in, started under the debug server
+
+Waiting : the process is up and held
+Waiting : before its first instruction
+
+Waiting --> Attached : the debugger connects
+Attached --> Stopped : a breakpoint, or a signal
+Stopped --> Attached : continue
+Stopped --> [*] : stop
+Attached --> [*] : detach — the pod goes with it
+
+note right of Waiting
+  Held, not racing: a program that would be
+  over before the debugger arrived is the
+  reason for the wait.
+end note
+
+@enduml

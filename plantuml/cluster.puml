@@ -1,0 +1,42 @@
+' The multi-tier example, as its chart deploys it.
+'
+' Needs Graphviz: deployment diagrams are laid out by dot, not by PlantUML.
+' This is the file that goes blank on a machine with the jar but no `dot`, and
+' comes back the moment an image is named — the image brings both.
+
+@startuml
+title multi-tier, as the chart puts it in the cluster
+
+skinparam shadowing false
+skinparam componentStyle rectangle
+
+node "your machine" {
+  component "abydos" as ide
+  component "build/app\nbuild/web" as binaries
+}
+
+cloud "k3d-local" {
+  frame "namespace: abydos-examples" {
+    node "pod: multi-tier" {
+      component "app\n:8080" as app
+      component "web\n:8081" as web
+    }
+    database "postgres" as db
+    component "redis" as cache
+  }
+}
+
+ide --> binaries : cross-compiled here
+binaries ..> app : pushed into the pod
+ide ..> app : Delve, over a forwarded port
+
+web --> app : /api
+app --> db
+app --> cache
+
+note bottom of db
+  Somebody else's chart. Two containers of it
+  are replaced; the rest is left alone.
+end note
+
+@enduml

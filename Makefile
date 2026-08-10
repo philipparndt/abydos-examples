@@ -32,6 +32,10 @@ java: ## Build the Java examples (needs a JDK, and the network once)
 	@cd java/maven-service && mvn -q -B package -DskipTests
 	@cd java/gradle-service && gradle -q --console=plain assemble
 
+.PHONY: diagrams
+diagrams: ## Draw the diagrams (needs docker, or Apple's container)
+	@./plantuml/draw.sh
+
 .PHONY: charts
 charts: ## Check the charts
 	@helm lint multi-tier/deploy/chart --values multi-tier/deploy/values-dev.yaml

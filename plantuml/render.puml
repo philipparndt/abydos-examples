@@ -1,0 +1,48 @@
+' How the picture on the right gets there.
+'
+' The one file here that draws with nothing but the jar: sequence diagrams are
+' laid out by PlantUML itself, so this one comes back even on a machine with no
+' Graphviz. The other three do not — which is half the reason for the image.
+
+@startuml
+title A diagram, drawn by something nobody installed
+
+skinparam shadowing false
+
+actor You
+participant "Editor" as editor
+participant "Preview" as preview
+participant "container\n(or docker)" as runtime
+participant "plantuml/plantuml" as image
+
+You -> editor : type a line
+editor -> preview : the text changed
+
+note right of preview
+  Debounced. Drawing means starting a JVM,
+  and a diagram per keystroke would mean
+  a JVM per keystroke.
+end note
+
+preview -> runtime : run --rm -i plantuml/plantuml:1.2026.6 -pipe -tpng
+activate runtime
+runtime -> image : start
+activate image
+
+preview -> image : @startuml … @enduml, on stdin
+image --> preview : PNG, on stdout
+deactivate image
+runtime --> preview : exit 0
+deactivate runtime
+
+preview -> You : the drawing
+
+note over preview, image
+  Nothing is mounted. The container never sees the
+  project — only the text of this one file — and
+  nothing is written beside the source either.
+
+  UTF-8 both ways, so „Größe" arrives as „Größe".
+end note
+
+@enduml

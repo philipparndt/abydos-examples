@@ -1,0 +1,45 @@
+*' Which PlantUML draws this file, and in which order the question is asked.
+'
+' Worth having as a diagram because the order is the decision: an image that
+' was asked for beats a local install, everywhere else the machine wins.
+
+@startuml
+title Which PlantUML draws it
+
+skinparam shadowing false
+' Four branches side by side is a picture as wide as a desk. Vertically, it
+' reads as what it is: a list of questions asked in order.
+!pragma useVerticalIf on
+
+start
+
+:open a .puml;
+
+if (an image named — .abydos/tools.json,\nor settings — and a runtime to run it?) then (yes)
+  :draw in the container;
+  note right
+    Pinned beats installed, which is
+    the point of pinning: the same file
+    should look the same on two machines.
+  end note
+  stop
+elseif (plantuml on the PATH?) then (yes)
+  :draw with the command;
+  note right
+    Homebrew's wrapper script, with
+    whatever options it sets.
+  end note
+  stop
+elseif (java, and a jar —\nPLANTUML_JAR or where downloads land?) then (yes)
+  :java -jar plantuml.jar;
+  stop
+else (none of them)
+  :say in one sentence what to install;
+  note right
+    An empty pane tells nobody anything.
+  end note
+endif
+
+stop
+
+@enduml

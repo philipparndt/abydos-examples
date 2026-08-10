@@ -8,6 +8,8 @@
 !run/
 !run/**
 
-# Which image a tool comes from is the repository's business, not one
-# machine's, so that file is committed too. The app does not write this line.
+# tools.json is the exception this example is about: which image draws these
+# diagrams is the project's business, not one machine's, so it is committed.
+# The app writes this file without that line — add it, or the thing everybody
+# is meant to share stays untracked.
 !tools.json
