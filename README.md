@@ -32,6 +32,7 @@ make charts      # lint the chart
 | [java/maven-service](java/maven-service) | Java and Maven: a service with no dependencies, run and debugged here and in a cluster |
 | [java/gradle-service](java/gradle-service) | Java and Gradle in the Kotlin DSL: a worker that would be over before you arrived, so the pod's JVM waits |
 | [openscad](openscad) | two parametric models — change a number, save, watch the preview; a bracket you can hold in your head, and a dollhouse a metre tall |
+| [cadova-models](cadova-models) | the same idea in Swift: a Cadova package whose two executables each write a 3MF, carrying no launch configurations because its `Package.swift` is enough to say what it can run |
 | [plantuml](plantuml) | four diagrams and no PlantUML: the project names an image, and docker or Apple's container draws them |
 | [git-scenarios](git-scenarios) | nine repositories, each stuck in a state worth looking at |
 
@@ -67,6 +68,7 @@ that follows the current context cannot follow it onto production.
 | native/* | odin, zig, cargo, cc, c++ — whichever you want to try |
 | java/* | a JDK; `jdtls` for completion and problems, and the java-debug bundle for debugging |
 | openscad | OpenSCAD, for the preview |
+| cadova-models | a Swift 6.3 toolchain, and the network once: seven packages to resolve and a minute to build the first time |
 | plantuml | nothing, if docker or Apple's container is here — otherwise plantuml, and graphviz for two of the four |
 | git-scenarios | git |
 
