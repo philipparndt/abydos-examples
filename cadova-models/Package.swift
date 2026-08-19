@@ -13,10 +13,24 @@ import PackageDescription
 // Both names are plain string literals rather than computed, which is what
 // anything reading this manifest as text can see.
 //
-// Pinned `upToNextMinor`, which is what Cadova asks for: it is below 1.0 and
-// keeps its API stable only within a minor version. `Package.resolved` is
-// committed beside this file, so a fresh checkout builds the same seven
-// packages this one was written against rather than whatever is newest.
+// **On `dev` rather than a version, and only until the next tag.** Cadova asks
+// for `upToNextMinor` — it is below 1.0 and keeps its API stable only within a
+// minor version — and that is what belongs here. What it is on `dev` for is
+// `CADOVA_REVEAL_FILES`, added upstream on 2026-08-18 in `d358a4fd` and in no
+// release: it is what lets whoever starts a build say that this one should not
+// open a Finder window, and a preview pane that opens one on every rebuild is
+// unusable. That commit also deleted the `Settings` type these models used to
+// set from the inside, so this is not a pin that can be undone on its own —
+// going back before it means putting those lines back.
+//
+// Put `.upToNextMinor(from:)` back the moment there is a tag containing that
+// setting. A branch dependency has no version to reason about, so nothing warns
+// anybody this is temporary except this paragraph.
+//
+// `Package.resolved` is committed beside this file, so a fresh checkout builds
+// the same packages this one was written against rather than whatever is
+// newest. On a branch that pin is a *revision*, which is what keeps this
+// reproducible while `dev` moves under it.
 //
 // The directory is `cadova-models` and not `cadova`, which is worth knowing
 // before anybody renames it back. SwiftPM takes a package's *identity* from
@@ -33,7 +47,7 @@ let package = Package(
         .executable(name: "hex-key-holder", targets: ["HexKeyHolder"]),
     ],
     dependencies: [
-        .package(url: "https://github.com/tomasf/Cadova.git", .upToNextMinor(from: "0.9.0")),
+        .package(url: "https://github.com/tomasf/Cadova.git", branch: "dev"),
     ],
     targets: [
         .executableTarget(

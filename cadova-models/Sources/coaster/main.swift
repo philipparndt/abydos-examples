@@ -6,6 +6,10 @@ import Cadova
 //
 // Change `diameter`, `thickness` or `rim` and run it again — that is the whole
 // loop this example is here for.
+
+// Nothing here about Finder windows: whoever starts the run sets
+// `CADOVA_REVEAL_FILES`, and `HexKeyHolder/main.swift` carries the reasoning.
+
 await Project(packageRelative: "Models") {
     await Model("coaster") {
         let diameter = 90.0
