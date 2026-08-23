@@ -1,0 +1,7 @@
+{
+  "name": "here",
+  "type": "java",
+  "request": "launch",
+  "program": "com.example.hotswap.Ticker",
+  "cwd": "${workspaceFolder}"
+}

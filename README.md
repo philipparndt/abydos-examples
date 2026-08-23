@@ -30,6 +30,7 @@ make charts      # lint the chart
 | [native/c-hello](native/c-hello) | C, the same |
 | [native/cpp-hello](native/cpp-hello) | C++, the same |
 | [java/maven-service](java/maven-service) | Java and Maven: a service with no dependencies, run and debugged here and in a cluster |
+| [java/hot-swap](java/hot-swap) | Java and Maven again, and only about one thing: changing a method body in a JVM that never stops. It keeps count out loud, so a swap can be told from a restart |
 | [java/gradle-service](java/gradle-service) | Java and Gradle in the Kotlin DSL: a worker that would be over before you arrived, so the pod's JVM waits |
 | [openscad](openscad) | two parametric models — change a number, save, watch the preview; a bracket you can hold in your head, and a dollhouse a metre tall |
 | [cadova-models](cadova-models) | the same idea in Swift: a Cadova package whose two executables each write a 3MF, carrying no launch configurations because its `Package.swift` is enough to say what it can run |

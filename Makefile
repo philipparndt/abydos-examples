@@ -31,6 +31,7 @@ build: ## Build every example that has a build
 .PHONY: java
 java: ## Build the Java examples (needs a JDK, and the network once)
 	@cd java/maven-service && mvn -q -B package -DskipTests
+	@cd java/hot-swap && mvn -q -B package -DskipTests
 	@cd java/gradle-service && gradle -q --console=plain assemble
 
 # The third of those, and the slowest: seven packages to fetch and a C++
@@ -58,7 +59,8 @@ charts: ## Check the charts
 clean: ## Remove everything built and generated
 	@rm -rf git-scenarios/out */build native/*/build native/zig-hello/zig-out \
 		native/zig-hello/.zig-cache native/rust-hello/target \
-		java/maven-service/target java/gradle-service/build java/gradle-service/.gradle \
+		java/maven-service/target java/hot-swap/target \
+		java/gradle-service/build java/gradle-service/.gradle \
 		cadova-models/.build cadova-models/Models
 	@cd go-service && go clean
 	@echo "==> cleaned"
