@@ -5,7 +5,7 @@
   "program": "${workspaceFolder}",
   "cwd": "${workspaceFolder}",
   "env": { "STAGE": "dev" },
-  "ideai.devPod": {
+  "abydos.devPod": {
     "context": "${currentContext}",
     "allowedContexts": "k3c-*, k3d-*, *-local",
     "namespace": "abydos-examples",

@@ -4,5 +4,5 @@
   "request": "launch",
   "program": "${workspaceFolder}/zig-out/bin/zig-hello",
   "cwd": "${workspaceFolder}",
-  "ideai.make": { "targets": ["build"] }
+  "abydos.make": { "targets": ["build"] }
 }

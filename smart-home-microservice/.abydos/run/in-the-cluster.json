@@ -2,7 +2,7 @@
   "args" : [
     "${workspaceFolder}/config/dev.json"
   ],
-  "ideai.devPod" : {
+  "abydos.devPod" : {
     "context" : "Default",
     "files" : [
       "config/dev.json"

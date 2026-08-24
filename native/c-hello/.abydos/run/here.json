@@ -4,5 +4,5 @@
   "request": "launch",
   "program": "${workspaceFolder}/build/c-hello",
   "cwd": "${workspaceFolder}",
-  "ideai.make": { "targets": ["build"] }
+  "abydos.make": { "targets": ["build"] }
 }

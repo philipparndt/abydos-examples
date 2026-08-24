@@ -4,13 +4,13 @@
   "request": "launch",
   "program": "${workspaceFolder}/web",
   "cwd": "${workspaceFolder}/web",
-  "ideai.devPod": {
+  "abydos.devPod": {
     "context": "${currentContext}",
     "allowedContexts": "k3c-*, k3d-*, *-local",
     "namespace": "abydos-examples",
     "port": 3000
   },
-  "ideai.helm": {
+  "abydos.helm": {
     "chart": "deploy/chart",
     "release": "multi-tier",
     "values": ["deploy/values-dev.yaml"],
