@@ -121,6 +121,19 @@ probe devcontainers/two-containers alpine:3.21 /workspaces/two-containers "" \
 probe devcontainers/two-containers golang:1.24-alpine /workspaces/two-containers "" \
 	'echo "the other one, with $(go version)"'
 
+# The one that has to prove more than "it came up": the server is in the image,
+# and the toolchain it is a front end for is beside it. Built here, as
+# dockerfile-build is, because the whole point is what was put inside.
+echo
+echo "==> devcontainers/python-language-server (built from .devcontainer/Dockerfile)"
+docker build -q \
+	-t abydos-devcontainer:python-language-server \
+	-f "$here/python-language-server/.devcontainer/Dockerfile" \
+	"$here/python-language-server" >/dev/null
+probe devcontainers/python-language-server abydos-devcontainer:python-language-server \
+	/workspaces/python-language-server "" \
+	'command -v pyright-langserver && pyright-langserver --version && python3 -c "import sys; print(sys.version.split()[0])"'
+
 echo
 echo "==> refused on purpose, so there is nothing to bring up"
 echo "    multi-tier                     dockerComposeFile"

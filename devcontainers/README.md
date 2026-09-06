@@ -26,6 +26,7 @@ which is where a project offering more than one container shows all of them.
 | [post-create](post-create) | `postCreateCommand`, slow enough to watch being reported, installing a package the image does not carry | `alpine:3.21` (8 MB) |
 | [post-create-fails](post-create-fails) | the same, with a command that exits 3 partway and a `postStartCommand` that must not run after it | `alpine:3.21` (8 MB) |
 | [two-containers](two-containers) | two `devcontainer.json`, offered as two menu entries and up at the same time | `alpine:3.21` + `golang:1.24-alpine` |
+| [python-language-server](python-language-server) | the only one that proves something *working inside* rather than merely up: ⌘-click a name and a `pyright` that is not on this machine answers | built here from `python:3.12-alpine3.21`, with Node and pyright 1.1.411 |
 
 Everything is pinned, and Alpine wherever an Alpine exists. `go-service` names
 `golang:1.24-alpine` rather than `mcr.microsoft.com/devcontainers/go` on purpose:
