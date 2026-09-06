@@ -1,6 +1,6 @@
 # git-scenarios
 
-Ten repositories, each stuck in a state worth looking at. They are made by a
+Twelve repositories, each stuck in a state worth looking at. They are made by a
 script rather than committed, because a repository inside a repository is a
 submodule or a mess:
 
@@ -20,6 +20,19 @@ submodule or a mess:
 | `stashed` | two stashes, which are easy to forget |
 | `large` | 300 commits, for paging and for speed |
 | `blame` | one file, four authors, two years apart, and a line nobody has committed — blame mode |
+| `superproject` | twelve submodules, four with edits nobody committed and one whose HEAD has moved past the recorded gitlink |
+| `pictures` | a logo painted three times, the last one uncommitted — a diff with a picture in it |
+
+`superproject` is built at twelve submodules, which is a size that makes in a
+second. The work behind it was measured at two hundred, and that size can be
+made too:
+
+```sh
+SUBMODULES=200 ./make-scenarios.sh
+```
+
+Its submodules are cloned from `out/modules`, which is why that directory sits
+beside the twelve and is not one of them.
 
 Open one of them as a project. They are throwaway: run the script again and
 they are all as they started.

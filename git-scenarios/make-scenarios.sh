@@ -190,4 +190,99 @@ write_as "Radia Perlman" "radia@example.com" "2026-06-15T13:20:00+02:00" \
 printf '\n# TODO: read the target from the config\n' >> "$repo/thermostat.py"
 say blame "four authors over two years, one uncommitted line"
 
+# 11. A superproject: many working copies that look like one.
+#
+# Twelve by default, because these are meant to be made in a second and thrown
+# away. `SUBMODULES=200 ./make-scenarios.sh` builds the size the submodules
+# work was measured against — a `git status` that walks every submodule inside
+# one process against one that asks each of them separately.
+#
+# `protocol.file.allow` because git refuses a file:// submodule since
+# CVE-2022-39253, and every one of these is a directory beside it.
+count="${SUBMODULES:-12}"
+mkdir -p "$out/modules"
+for i in $(seq 1 "$count"); do
+	name="$(printf 'mod-%03d' "$i")"
+	git init -q -b main "$out/modules/$name"
+	git -C "$out/modules/$name" config user.name "$GIT_AUTHOR_NAME"
+	git -C "$out/modules/$name" config user.email "$GIT_AUTHOR_EMAIL"
+	for f in a b c d e f g h; do
+		printf '%s of %s\n' "$f" "$name" > "$out/modules/$name/$f.txt"
+	done
+	git -C "$out/modules/$name" add .
+	git -C "$out/modules/$name" commit -qm "First commit"
+done
+
+repo="$(new superproject)"
+for i in $(seq 1 "$count"); do
+	name="$(printf 'mod-%03d' "$i")"
+	git -C "$repo" -c protocol.file.allow=always \
+		submodule add -q "$out/modules/$name" "lib/$name"
+done
+git -C "$repo" commit -qm "Add $count submodules"
+
+# Four work trees with edits nobody committed. Only the submodules' own
+# repositories know about these: the superproject, asked with
+# --ignore-submodules=dirty, says nothing about them.
+for i in 2 3 5 7; do
+	[ "$i" -le "$count" ] || continue
+	name="$(printf 'mod-%03d' "$i")"
+	printf 'edited, and not committed\n' >> "$repo/lib/$name/a.txt"
+done
+
+# And one whose HEAD has moved past the commit the superproject recorded —
+# which is the one thing only the superproject knows.
+name="$(printf 'mod-%03d' 1)"
+printf 'a commit the superproject has not recorded\n' >> "$repo/lib/$name/b.txt"
+git -C "$repo/lib/$name" commit -qam "Move ahead of the gitlink"
+say superproject "$count submodules, four dirty, one gitlink moved"
+
+# 12. Pictures in a history, so a diff has something to draw rather than
+# describe. Written by python3 rather than committed, because a generated
+# repository should not need fixtures beside it, and ImageMagick is one more
+# thing to have installed than git and python3 are.
+repo="$(new pictures)"
+png() {
+	python3 - "$1" "$2" "$3" "$4" <<'PYTHON'
+import struct, sys, zlib
+
+path, width, height, colour = sys.argv[1], int(sys.argv[2]), int(sys.argv[3]), sys.argv[4]
+red, green, blue = (int(colour[i:i + 2], 16) for i in (0, 2, 4))
+
+# A solid ground with a darker band across the middle third, so that two of
+# these differ in a way somebody can see at a glance.
+rows = bytearray()
+for y in range(height):
+    band = height // 3 <= y < 2 * height // 3
+    pixel = bytes((red // 2, green // 2, blue // 2) if band else (red, green, blue))
+    rows += b"\x00" + pixel * width
+
+
+def chunk(kind, payload):
+    body = kind + payload
+    return struct.pack(">I", len(payload)) + body + struct.pack(">I", zlib.crc32(body))
+
+
+open(path, "wb").write(
+    b"\x89PNG\r\n\x1a\n"
+    + chunk(b"IHDR", struct.pack(">IIBBBBB", width, height, 8, 2, 0, 0, 0))
+    + chunk(b"IDAT", zlib.compress(bytes(rows), 9))
+    + chunk(b"IEND", b"")
+)
+PYTHON
+}
+
+png "$repo/logo.png" 160 120 2f6f4e
+git -C "$repo" add logo.png
+git -C "$repo" commit -qm "A logo"
+
+# A second version at the same size: the diff is the picture, not the bytes.
+png "$repo/logo.png" 160 120 7a3f8c
+git -C "$repo" commit -qam "Repaint the logo"
+
+# A third that is a different shape, and left uncommitted — so the changes
+# pane has a picture to compare without anybody going into the history first.
+png "$repo/logo.png" 240 120 b5651d
+say pictures "a logo painted three times, the last one uncommitted"
+
 printf '\nMade in %s\n' "$out"
