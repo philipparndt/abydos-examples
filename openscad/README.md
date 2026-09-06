@@ -10,14 +10,14 @@ is the only step.
 
 `adapter-feder.scad` is an adapter for a Hubelino marble machine — a curved
 web on an axle, a paddle end cut at 30°, and a blind hole aimed at where a
-printed spring used to be. Change `stegLaenge`, `federStart` or `schnittWinkel`
+printed spring used to be. Change `webLength`, `springStart` or `bevelAngle`
 and the preview follows; the interesting ones are the derived values, because
-`bohrRi` — which way the hole points — is computed back through the same chain
+`holeDirection` — which way the hole points — is computed back through the same chain
 of rotations that places the end piece, so moving the end piece moves the hole
 with it.
 
-One module is deliberately not called. `feder()` draws the printed spring the
-part used to carry, and `stegUndFeder()` has the call commented out: a steel
+One module is deliberately not called. `spring()` draws the printed spring the
+part used to carry, and `webAndSpring()` has the call commented out: a steel
 spring in the blind hole replaced it, and the spring's parameters stay because
 they are what say where that hole has to point. So the structure pane lists a
 module the render does not contain, on purpose.
@@ -38,6 +38,4 @@ angles, and a handful of checks that say when a window has run into the floor
 above it.
 
 Worth trying: the structure pane lists the modules; go-to-definition on
-`steg(...)`, `endstueck(...)` or `plate(...)` jumps to it.
-
-The comments in `adapter-feder.scad` are in German, as its author wrote them.
+`web(...)`, `endPiece(...)` or `plate(...)` jumps to it.

@@ -1,82 +1,63 @@
+// An adapter for a Hubelino marble machine: a curved web on an axle, a paddle
+// end cut at 30°, and a blind hole for the steel spring that replaced the
+// printed one. Change a number at the top and the preview follows.
+
 $fn=200;
-hAchse=17.5;
+axleHeight=17.5;
 
-stegLaenge = 18.5;             // Bogenlaenge der Mittellinie
-stegR      = 45;              // Radius der Mittellinie
-stegW      = 3;                // Wandstaerke
-stegH      = 5.5;               // Hoehe. Zwischen den Achs-Bunden (z 3 bis 14.5)
-                               // sind 11.5 mm frei, das ist die Obergrenze.
-stegWinkel = stegLaenge/stegR*180/PI;
+webLength    = 18.5;  // arc length of the centreline
+webRadius    = 45;    // radius of the centreline
+webWall      = 3;     // wall thickness
+webHeight    = 5.5;   // height; 11.5 mm is clear between the axle collars
+webAngle     = webLength/webRadius*180/PI;
 
-federLaenge = 28;            // Bogenlaenge der Mittellinie
-federR      = 60;              // Radius der Mittellinie, gleiche Kruemmungs-
-                               // richtung wie der Steg
-federStart  = 30;              // Startwinkel gegen die Steg-Tangente:
-                               // die Feder laeuft zunaechst vom Steg weg
-                               // und kruemmt sich dann zurueck
-federVersatz = 2;              // Abzweigstelle als Bogenlaenge auf dem Steg,
-                               // von der Achse aus gemessen
-federW      = 1.4;             // Wandstaerke
-federH      = stegH;           // Hoehe
-kehleR      = 0.6;             // Radius der Verrundung an der Abzweigung
+springLength = 28;         // the printed spring, kept because it aims the hole
+springRadius = 60;
+springStart  = 30;         // start angle against the web's tangent
+springOffset = 2;          // where it branches off, as arc length along the web
+springWall   = 1.4;
+springHeight = webHeight;
+filletRadius = 0.6;        // fillet at the branch
 
-endH          = 5.5;             // Hoehe des Endstuecks, bewusst unabhaengig von
-                               // stegH. Es bleibt auf hAchse/2 zentriert.
-uebergang     = 6;             // Bogenlaenge, auf der der Steg von stegH auf
-                               // endH auslaeuft
-schnittWinkel = 30;            // 30°-Schraege am Endstueck
-endDrehung    = 0;             // Drehung des Endstuecks um die Verbindungskante,
-                               // negativ = im Uhrzeigersinn (Draufsicht)
-endAnkerR     = stegR+stegW/2; // Radius, auf dem die Verbindungskante liegt
-                               // (Aussenkante der Steg-Stirnflaeche)
-endUeberlappung = 0.5;         // wie tief das Endstueck in den Steg eintaucht.
-                               // Ein stumpfer Stoss mit exakt 0 waere geometrisch
-                               // huebscher, haengt aber an der Polygonisierung
-                               // des Bogens und reisst im Export auf.
-endFase       = 1.5;          // Fase an der Aussenecke (12,12): Abstand von der
-                               // Ecke auf der Kante y=12. Der Winkel ergibt sich,
-                               // weil die Fase am Zylinderausschnitt beginnt.
+endHeight       = 5.5;  // end piece height, independent of webHeight
+taperLength     = 6;    // arc length the web tapers over
+bevelAngle      = 30;   // bevel on the end piece
+endRotation     = 0;    // rotation about the joining edge, negative = clockwise
+endAnchorRadius = webRadius+webWall/2; // radius the joining edge lies on
+endOverlap      = 0.5;  // how far the end piece sinks in; 0 tears open on export
+endChamfer      = 1.5;  // chamfer on the outer corner (12,12)
 
-// Bohrung fuer die Springfeder. Sie ersetzt die gedruckte Feder und soll in
-// deren Richtung ziehen, deshalb zielt die Achse auf das freie Ende, das die
-// gedruckte Feder hatte. Die Feder-Parameter oben bleiben dafuer stehen.
-bohrD     = 5;                 // Durchmesser
-bohrTiefe = 2.5;                 // Sackloch-Tiefe ab der Schraegflaeche
-zapfenD   = 3;                 // Zentrierzapfen im Sackloch, muss in den
-                               // Innendurchmesser der Feder passen
-zapfenL   = bohrTiefe;         // Laenge ab dem Bohrungsgrund. Gleich bohrTiefe
-                               // heisst: endet auf Hoehe des Eintrittspunkts
-bohrPos   = 6.93;              // Eintritt: Abstand von der hinteren Ecke (0,12)
-                               // entlang der Schraege (0 .. 12/cos(winkel))
+// Blind hole for the steel spring, aimed at the free end the printed spring had.
+holeDiameter      = 5;
+holeDepth         = 2.5;
+pinDiameter       = 3;          // centring pin, fits the spring's inner diameter
+pinLength         = holeDepth;
+holeEntryDistance = 6.93;       // entry, measured from (0,12) along the bevel
 
 function rot2(p, a) = [p[0]*cos(a)-p[1]*sin(a), p[0]*sin(a)+p[1]*cos(a)];
 
-// Freies Ende der alten Feder (Mittellinie) in Weltkoordinaten
-function federEnde() =
-    let(t  = federLaenge/federR*180/PI,
-        p  = rot2([federR*(1-cos(t)), federR*sin(t)], federStart),
-        vw = federVersatz/stegR*180/PI)
-    rot2([p[0]-stegR, p[1]], -vw) + [stegR, 0];
+function springEnd() =
+    let(t  = springLength/springRadius*180/PI,
+        p  = rot2([springRadius*(1-cos(t)), springRadius*sin(t)], springStart),
+        branchAngle = springOffset/webRadius*180/PI)
+    rot2([p[0]-webRadius, p[1]], -branchAngle) + [webRadius, 0];
 
-// Punkt aus dem lokalen System des Endstuecks nach Welt - dieselbe Kette wie
-// beim Aufruf unten, nur zweidimensional nachgerechnet
+// The same chain as the call at the bottom, in two dimensions.
 function endToWorld(p) =
-    rot2(rot2([p[0]-12*tan(schnittWinkel), p[1]-endUeberlappung],
-              180+endDrehung) + [endAnkerR, 0],
-         180-stegWinkel) + [stegR, 0];
+    rot2(rot2([p[0]-12*tan(bevelAngle), p[1]-endOverlap],
+              180+endRotation) + [endAnchorRadius, 0],
+         180-webAngle) + [webRadius, 0];
 
-bohrE  = [bohrPos*sin(schnittWinkel), 12-bohrPos*cos(schnittWinkel)];
-bohrZ  = federEnde() - endToWorld(bohrE);   // Zielrichtung in Weltkoordinaten
-bohrRi = atan2(bohrZ[1], bohrZ[0]) - (endDrehung-stegWinkel) + 180;
-                               // ins lokale System zurueckgedreht, +180 weil
-                               // die Bohrung ins Material hinein laeuft
+holeEntry  = [holeEntryDistance*sin(bevelAngle), 12-holeEntryDistance*cos(bevelAngle)];
+holeTarget  = springEnd() - endToWorld(holeEntry);
+holeDirection = atan2(holeTarget[1], holeTarget[0]) - (endRotation-webAngle) + 180;      // +180: into the material
 
-module achse(h=hAchse) {
+module axle(h=axleHeight) {
     w=8;
     d=2;
-    
+
     cylinder(d=3, h=h);
-    
+
     translate([0,0,h-w-d])
     cylinder(d=4.5, h=w);
 
@@ -84,158 +65,137 @@ module achse(h=hAchse) {
     cylinder(d=4.5, h=w);
 }
 
-// laenge = Bogenlaenge der Mittellinie, r = Radius der Mittellinie,
-// w = Wandstaerke, h = Hoehe. Der Bogen startet auf der Achse (0,0)
-// und laeuft nach +y.
-module steg(laenge=stegLaenge, r=stegR, w=stegW, h=stegH) {
-    winkel = laenge/r*180/PI;      // Bogenlaenge -> Oeffnungswinkel
+// The arc starts on the axle (0,0) and runs towards +y.
+module web(length=webLength, r=webRadius, w=webWall, h=webHeight) {
+    angle = length/r*180/PI;
 
-    translate([r, 0, hAchse/2-h/2])
-    rotate([0, 0, 180-winkel])
-    rotate_extrude(angle=winkel, $fn=500)
+    translate([r, 0, axleHeight/2-h/2])
+    rotate([0, 0, 180-angle])
+    rotate_extrude(angle=angle, $fn=500)
     translate([r-w/2, 0])
     square([w, h]);
 }
 
-// Gleicher Aufbau wie der Steg, nur duenner und enger gekruemmt. Sie zweigt
-// bei der Bogenlaenge "versatz" von der Steg-Mittellinie ab und startet dort
-// um "start" gegen dessen Tangente gekippt.
-module feder(laenge=federLaenge, r=federR, w=federW, h=federH,
-             start=federStart, versatz=federVersatz) {
-    vw = versatz/stegR*180/PI;     // Bogenwinkel der Abzweigstelle
+// The web again, thinner and more tightly curved, branching off it.
+module spring(length=springLength, r=springRadius, w=springWall, h=springHeight,
+              start=springStart, branchOffset=springOffset) {
+    branchAngle = branchOffset/webRadius*180/PI;
 
-    translate([stegR, 0, 0])       // Drehung um den Steg-Bogenmittelpunkt ...
-    rotate([0, 0, -vw])            // ... auf die Abzweigstelle
-    translate([-stegR, 0, 0])
-    rotate([0, 0, start])          // Startwinkel gegen die Steg-Tangente
-    steg(laenge, r, w, h);
+    translate([webRadius, 0, 0])
+    rotate([0, 0, -branchAngle])
+    translate([-webRadius, 0, 0])
+    rotate([0, 0, start])
+    web(length, r, w, h);
 }
 
-// Laesst den Steg am Paddle-Ende von stegH auf endH auslaufen. Geschnitten
-// wird mit zwei geneigten Ebenen, die am Bogenende genau auf Paddle-Hoehe
-// liegen und nach hinten auf Steg-Hoehe ansteigen. In x ist der Schnitt auf
-// die Steg-Breite begrenzt, damit die Feder unberuehrt bleibt.
-module uebergangSchnitt(len=uebergang) {
-    alpha = atan((stegH-endH)/2/len);
+// Tapers the web to endHeight at the paddle end, with two inclined planes. Limited to
+// the web's width in x so the spring is untouched.
+module taperCut(len=taperLength) {
+    alpha = atan((webHeight-endHeight)/2/len);
 
-    // Der Steg endet 0.1 mm hoeher als das Paddle. Genau buendig waeren die
-    // Deckflaechen koinzident und es entstuenden nicht-manifold-Kanten.
-    module keil() {
-        translate([0, 0, endH/2+0.1])
+    // 0.1 mm proud of the paddle: flush would make the top faces coincident,
+    // and that is a non-manifold edge.
+    module wedge() {
+        translate([0, 0, endHeight/2+0.1])
         rotate([alpha, 0, 0])
         translate([-4, 0, 0])
         cube([8, 40, 20]);
     }
 
-    translate([stegR, 0, hAchse/2])
-    rotate([0, 0, 180-stegWinkel])   // Frame am Bogenende, +y zeigt zurueck
-    translate([stegR, 0, 0]) {
-        keil();
-        mirror([0, 0, 1]) keil();    // Gegenstueck unten
+    translate([webRadius, 0, axleHeight/2])
+    rotate([0, 0, 180-webAngle])
+    translate([webRadius, 0, 0]) {
+        wedge();
+        mirror([0, 0, 1]) wedge();
     }
 }
 
-// Steg und Feder als ein Koerper. Beide sind Prismen gleicher Hoehe, deshalb
-// laesst sich die Kehle an der Abzweigung im 2D-Querschnitt verrunden:
-// offset(+r) danach offset(-r) ist ein Closing - es fuellt konkave Ecken mit
-// Radius r und laesst konvexe Ecken unveraendert.
-// Wichtig: das Ergebnis ersetzt steg() und feder(), es wird NICHT dazu-
-// unioniert. Sonst laegen zwei minimal verschiedene Polygonisierungen
-// derselben Boegen aufeinander (rotate_extrude vs. projection+offset) und
-// erzeugen Splitterflaechen - im Export waren das 291 nicht-manifold-Kanten.
-module stegUndFeder(r=kehleR) {
+// Web and spring as one body: both are prisms of the same height, so the fillet
+// is done in the 2D section — offset(+r) then offset(-r) fills concave corners
+// and leaves convex ones alone.
+//
+// This replaces web() and spring(); it is NOT unioned with them. Two
+// polygonisations of the same arcs on top of each other (rotate_extrude vs.
+// projection+offset) gave sliver faces — 291 non-manifold edges on export.
+module webAndSpring(r=filletRadius) {
     difference() {
-        translate([0, 0, hAchse/2-stegH/2])
-        linear_extrude(stegH)
+        translate([0, 0, axleHeight/2-webHeight/2])
+        linear_extrude(webHeight)
         offset(r=-r) offset(r=r)
         projection() {
-            steg();
-            //feder();
+            web();
+            //spring();
         }
 
-        if (stegH > endH) uebergangSchnitt();
+        if (webHeight > endHeight) taperCut();
     }
 }
 
-module endstueck(winkel=30, h=6, kanteDicke=1.2, kanteHoehe=1.2, kanteLaenge=11.3, kanteVersatz=0, fase=endFase) {
-    schraege = 12/cos(winkel);     // 13.856 = volle Laenge der Schrägkante
-    kanteY   = kanteLaenge*cos(winkel);    // y-Ausdehnung der Kante
-    versatzY = kanteVersatz*cos(winkel);
+module endPiece(angle=30, h=6, lipThickness=1.2, lipHeight=1.2, lipLength=11.3, lipOffset=0, chamfer=endChamfer) {
+    bevel = 12/cos(angle);
+    lipY   = lipLength*cos(angle);
+    offsetY = lipOffset*cos(angle);
 
-    zylX = 21;                     // Zylinderausschnitt an der rechten Seite
-    zylY = 4;
-    zylD = 20;
-    zylEnde = zylY + sqrt(pow(zylD/2, 2) - pow(12-zylX, 2));  // dort verlaesst
-                                   // der Ausschnitt die Kante x=12
+    cutoutX = 21;                     // cylindrical cutout on the right
+    cutoutY = 4;
+    cutoutDiameter = 20;
+    cutoutEnd = cutoutY + sqrt(pow(cutoutDiameter/2, 2) - pow(12-cutoutX, 2));  // where it leaves x=12
 
     difference() {
         cube([12, 12, h]);
 
-        translate([0, 12, 0])          // Drehpunkt = linke obere Ecke
-        rotate([0, 0, winkel])
-        translate([-12, -20, -1])      // rechte Schnittfläche genau durch den Drehpunkt
+        translate([0, 12, 0])          // pivot = top left corner
+        rotate([0, 0, angle])
+        translate([-12, -20, -1])
         cube([12, 20, h+2]);
 
-	   translate([zylX, zylY, 0])
-	    	cylinder(d=zylD, h=20);
+	   translate([cutoutX, cutoutY, 0])
+	    	cylinder(d=cutoutDiameter, h=20);
 
-        // Fase an der Aussenecke (12,12): sie beginnt genau dort, wo der
-        // Zylinderausschnitt die Kante x=12 verlaesst, und endet "fase" vor
-        // der Ecke auf der Kante y=12. Der Winkel folgt aus den zwei Punkten.
+        // Chamfer from where the cutout leaves x=12 to `chamfer` short of the corner.
         translate([0, 0, -1])
         linear_extrude(h+2)
-        polygon([[12-fase, 12], [12, zylEnde], [14, zylEnde], [14, 14], [12-fase, 14]]);
+        polygon([[12-chamfer, 12], [12, cutoutEnd], [14, cutoutEnd], [14, 14], [12-chamfer, 14]]);
 
-        // Sackloch fuer die Springfeder, aus der Schraegflaeche heraus auf das
-        // alte Federende gerichtet. Der Schneidzylinder startet 2 mm vor der
-        // Flaeche, damit die schraege Muendung sauber ausbricht.
-        translate([bohrE[0], bohrE[1], h/2])
-        rotate([0, 0, bohrRi])
+        // Starts 2 mm in front of the face so the angled mouth breaks out cleanly.
+        translate([holeEntry[0], holeEntry[1], h/2])
+        rotate([0, 0, holeDirection])
         rotate([0, 90, 0])
         translate([0, 0, -2])
-        cylinder(d=bohrD, h=bohrTiefe+2);
+        cylinder(d=holeDiameter, h=holeDepth+2);
     }
 
-    // Zentrierzapfen, koaxial zum Sackloch. Steht am Bohrungsgrund und ragt
-    // zapfenL nach aussen - deshalb nach dem difference() und nicht darin.
-    // Das +1 steckt den Fuss 1 mm ins Vollmaterial. Endete er genau auf dem
-    // Bohrungsgrund, waeren die beiden Stirnflaechen koplanar und es entstehen
-    // Scheintunnel (Genus 17 statt 0).
-    translate([bohrE[0], bohrE[1], h/2])
-    rotate([0, 0, bohrRi])
+    // Centring pin, after the difference() because it projects out of the hole.
+    // The +1 sinks its foot into solid material: ending flush on the bottom of
+    // the hole made the faces coplanar and the solid genus 17 instead of 0.
+    translate([holeEntry[0], holeEntry[1], h/2])
+    rotate([0, 0, holeDirection])
     rotate([0, 90, 0])
-    translate([0, 0, bohrTiefe-zapfenL])
-    cylinder(d=zapfenD, h=zapfenL+1);
+    translate([0, 0, holeDepth-pinLength])
+    cylinder(d=pinDiameter, h=pinLength+1);
 
-    // Kante an der Schrägkante, oben (z=h) und unten (z=-kanteHoehe).
-    // Beide Enden sind parallel zur Rückseite abgeschnitten (y=const),
-    // die Ausdehnung gibt der Beschnitt-Quader vor.
-    // kanteVersatz = Abstand von der hinteren Ecke (0,12) entlang der Schräge.
-    for (z = [-kanteHoehe, h])
+    // Lip along the bevel, above and below, trimmed parallel to the back.
+    for (z = [-lipHeight, h])
     intersection() {
-        translate([0, 12, 0])      // Drehpunkt = linke obere Ecke
-        rotate([0, 0, winkel])
-        translate([0, -schraege, z])
-        cube([kanteDicke, schraege, kanteHoehe]);
+        translate([0, 12, 0])
+        rotate([0, 0, angle])
+        translate([0, -bevel, z])
+        cube([lipThickness, bevel, lipHeight]);
 
-        translate([0, 12-versatzY-kanteY, z])
-        cube([12, kanteY, kanteHoehe]);
+        translate([0, 12-offsetY-lipY, z])
+        cube([12, lipY, lipHeight]);
     }
 }
 
-achse();
+axle();
 
-stegUndFeder();
+webAndSpring();
 
-// Endstueck sitzt immer am freien Ende des Stegs: die vordere Ecke der
-// Schraege (12*tan(winkel), 0) faellt auf die Verbindungskante der
-// Steg-Stirnflaeche.
-translate([stegR, 0, hAchse/2-endH/2])    // Bogenmittelpunkt, Endstueck mittig
-rotate([0, 0, 180-stegWinkel])            // Richtung Bogenende
-translate([endAnkerR, 0, 0])              // auf die Verbindungskante
-rotate([0, 0, 180])                       // Vorderseite (y=0) auf die Stirnflaeche drehen
-rotate([0, 0, endDrehung])                // ... und um die Verbindungskante weiterdrehen
-translate([-12*tan(schnittWinkel), -endUeberlappung, 0])  // vordere Ecke der
-                                          // Schraege auf diese Kante, um die
-                                          // Ueberlappung in den Steg geschoben
-endstueck(winkel=schnittWinkel, h=endH);
+// The front corner of the bevel falls on the joining edge of the web's end face.
+translate([webRadius, 0, axleHeight/2-endHeight/2])
+rotate([0, 0, 180-webAngle])
+translate([endAnchorRadius, 0, 0])
+rotate([0, 0, 180])
+rotate([0, 0, endRotation])
+translate([-12*tan(bevelAngle), -endOverlap, 0])
+endPiece(angle=bevelAngle, h=endHeight);
