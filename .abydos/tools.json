@@ -1,3 +1,4 @@
 {
-	"plantuml": "plantuml/plantuml:1.2026.6"
+	"plantuml": "plantuml/plantuml:1.2026.6",
+	"sops": { "ageKeyFile": "secrets/age-key.txt" }
 }
