@@ -20,3 +20,15 @@ nothing else. Open this folder as a project and choose **View ▸ New Terminal i
 Container** — the toolchain in that shell is `golang:1.24-alpine`'s, not this
 machine's, and the checkout is bind-mounted so git and the editor go on working
 here. `../devcontainers` has the rest of them.
+
+## The panel
+
+This is also the project with something in the bottom panel. `.abydos/backlog`
+holds six invented items across five states, and `openspec/` holds three
+changes — one part-way, one nearly done, and one with no `tasks.md`, which is
+meant to show no fraction rather than `0/0`. ⇧⌘B opens the backlog; the board
+and the list are the same files either way, and `abydos-backlog list` in a
+terminal here reads exactly what the panel draws.
+
+None of it is work anybody is waiting for. It is there so the panes have
+something to draw that is not empty.
