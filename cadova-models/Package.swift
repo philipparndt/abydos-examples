@@ -1,16 +1,20 @@
 // swift-tools-version: 6.3
 import PackageDescription
 
-// Two executables on purpose, spelled the two different ways a package can
-// spell one, so that a run list has something to get wrong:
+// Three executables, and the first two are spelled the two different ways a
+// package can spell one, so that a run list has something to get wrong:
 //
 //   * `hex-key-holder` is a *product* whose target is called `HexKeyHolder`.
 //     `swift run HexKeyHolder` answers "error: no executable product named
 //     'HexKeyHolder'", so the product's name is the runnable one.
 //   * `coaster` is a bare executable target that no product claims. SwiftPM
 //     gives it an implicit product of its own name, and it runs under that.
+//   * `high-speed-curve` is a bare target too, and is here for a different
+//     reason: it is the only model of the three that is a real printed object,
+//     two files rather than one, and slow enough that a preview of it has to
+//     behave while it is thinking.
 //
-// Both names are plain string literals rather than computed, which is what
+// Every name is a plain string literal rather than computed, which is what
 // anything reading this manifest as text can see.
 //
 // **On `dev` rather than a version, and only until the next tag.** Cadova asks
@@ -57,6 +61,11 @@ let package = Package(
         ),
         .executableTarget(
             name: "coaster",
+            dependencies: ["Cadova"],
+            swiftSettings: [.interoperabilityMode(.Cxx)]
+        ),
+        .executableTarget(
+            name: "high-speed-curve",
             dependencies: ["Cadova"],
             swiftSettings: [.interoperabilityMode(.Cxx)]
         ),
