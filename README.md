@@ -13,6 +13,7 @@ in `.abydos/run`, so pressing run is the first thing you can do.
 ```sh
 make build       # everything that has a build
 make scenarios   # the git repositories
+make secrets     # the secret files git cannot carry
 make diagrams    # draw the .puml files in a container
 make charts      # lint the chart
 ```
@@ -21,7 +22,7 @@ make charts      # lint the chart
 
 | project | what it is for |
 |---|---|
-| [go-service](go-service) | a backend with nothing in it but the shape of one: run it here, run it in a cluster, debug it there, profile it |
+| [go-service](go-service) | a backend with nothing in it but the shape of one: run it here, run it in a cluster, debug it there, profile it — and the one project with a backlog and an OpenSpec directory, so the bottom panel has something to draw |
 | [smart-home-microservice](smart-home-microservice) | a service that will not start without its configuration file, with a page to look at — the awkward one to develop in a cluster |
 | [multi-tier](multi-tier) | somebody else's chart: an application and a web front end in one pod, a database and a cache beside them, a values file per stage |
 | [native/odin-hello](native/odin-hello) | odin, written the way Odin is written — and running in a cluster, which its own linker cannot manage alone |
@@ -33,11 +34,16 @@ make charts      # lint the chart
 | [java/hot-swap](java/hot-swap) | Java and Maven again, and only about one thing: changing a method body in a JVM that never stops. It keeps count out loud, so a swap can be told from a restart |
 | [java/gradle-service](java/gradle-service) | Java and Gradle in the Kotlin DSL: a worker that would be over before you arrived, so the pod's JVM waits |
 | [openscad](openscad) | two parametric models — change a number, save, watch the preview; a bracket you can hold in your head, and a dollhouse a metre tall |
-| [cadova-models](cadova-models) | the same idea in Swift: a Cadova package whose two executables each write a 3MF, carrying no launch configurations because its `Package.swift` is enough to say what it can run |
+| [cadova-models](cadova-models) | the same idea in Swift: a Cadova package whose three executables each write a 3MF, carrying no launch configurations because its `Package.swift` is enough to say what it can run — and one of the three is a real printed object, big enough that a preview has to behave while it thinks |
 | [plantuml](plantuml) | four diagrams and no PlantUML: the project names an image, and docker or Apple's container draws them |
-| [git-scenarios](git-scenarios) | nine repositories, each stuck in a state worth looking at |
+| [mermaid](mermaid) | six diagrams and nothing to install, in the six shapes Mermaid draws differently |
+| [drawio](drawio) | four `.drawio` documents — pages, stencils, and one saved as an SVG that is also a diagram |
+| [devcontainers](devcontainers) | eight projects and nine `devcontainer.json` between them, a field each — one refused on purpose and written to work anyway, and one carrying the project's own language server |
+| [secrets](secrets) | the covers and SOPS, which are not the same feature: four encrypted files, four plaintext ones, and the three things git can be told about a `.env` |
+| [media](media) | a video that plays, one that is meant to fall back, and a picture — files whose rendered form is the whole of them |
+| [git-scenarios](git-scenarios) | twelve repositories, each stuck in a state worth looking at — including a superproject of submodules and a picture painted three times |
 
-## One repository, eight projects
+## One repository, many projects
 
 This repository is itself the case for subprojects: open it and the tree shows
 everything, but there is no one set of launch configurations, no one module to
@@ -53,7 +59,14 @@ two is open, and a diagram should draw either way.
 
 `git-scenarios/out` is the harder case, since each of those is a repository of
 its own inside this one. Opening one as a subproject points git at *that* work
-tree — the changes pane, the history and the branch name all come from it.
+tree — the changes pane, the history and the branch name all come from it. Its
+`superproject` goes one further: a repository whose own submodules are twelve
+more, and reading it as one working copy is what makes it worth generating.
+
+`secrets` is the case that has to be opened on its own. The offer to encrypt a
+plaintext file is read from the `.sops.yaml` at the *project* root, so from the
+top of the repository that folder's rules are not it — the decrypt works either
+way, and only the offer needs the subproject.
 
 ## What needs what
 
@@ -71,7 +84,10 @@ that follows the current context cannot follow it onto production.
 | openscad | OpenSCAD, for the preview |
 | cadova-models | a Swift 6.3 toolchain, and the network once: seven packages to resolve and a minute to build the first time |
 | plantuml | nothing, if docker or Apple's container is here — otherwise plantuml, and graphviz for two of the four |
-| git-scenarios | git |
+| mermaid, drawio, media | nothing |
+| devcontainers | docker, for the ones that come up |
+| secrets | `sops`, to decrypt anything; the example carries its own throwaway key |
+| git-scenarios | git, and python3 for two of the twelve |
 
 The cluster examples all use the namespace `abydos-examples`, so clearing up is
 one command:
@@ -82,9 +98,20 @@ kubectl delete namespace abydos-examples
 
 ## What is not here yet
 
-Node and Python. Go, Zig, Rust, C, C++, Odin and Java all run *and debug* in a
-cluster, in two arrangements: a native binary is cross-compiled here, pushed
-into the pod and held there by Delve or gdbserver, and a jar is built here,
-pushed into a pod that has a JVM, and debugged over JDWP with the JVM
-suspended until the debugger arrives. Node and Python would need a third —
-sources copied in, and their own protocols — and that is not built.
+**Node and Python in a cluster.** Go, Zig, Rust, C, C++, Odin and Java all run
+*and debug* in a cluster, in two arrangements: a native binary is
+cross-compiled here, pushed into the pod and held there by Delve or gdbserver,
+and a jar is built here, pushed into a pod that has a JVM, and debugged over
+JDWP with the JVM suspended until the debugger arrives. Node and Python would
+need a third — sources copied in, and their own protocols — and that is not
+built.
+
+Python is here for *editing*, which is a different thing:
+[devcontainers/python-language-server](devcontainers/python-language-server) is
+a project whose `pyright` lives in the container and answers from there. There
+is no Node example at all.
+
+**A tag, a submodule and a picture are here; a worktree is not.** The git
+scenarios cover the states a repository gets stuck in, and now a superproject
+too, but nothing here has a second worktree checked out — which is what the
+backlog's *start* makes, and what its cards offer to open.

@@ -46,6 +46,13 @@ models: ## Build the Cadova example (needs Swift 6.3, and the network once)
 	@cd cadova-models && xcrun swift build -j 4
 	@cd cadova-models && xcrun swift run -j 4 hex-key-holder
 	@cd cadova-models && xcrun swift run -j 4 coaster
+	@cd cadova-models && xcrun swift run -j 4 high-speed-curve
+
+# The three files the secrets example cannot commit, because git having them
+# is the thing they are fixtures against.
+.PHONY: secrets
+secrets: ## Write the secrets fixtures git cannot carry
+	@./secrets/make-fixtures.sh
 
 .PHONY: diagrams
 diagrams: ## Draw the diagrams (needs docker, or Apple's container)
@@ -63,4 +70,5 @@ clean: ## Remove everything built and generated
 		java/gradle-service/build java/gradle-service/.gradle \
 		cadova-models/.build cadova-models/Models
 	@cd go-service && go clean
+	@./secrets/make-fixtures.sh --clean
 	@echo "==> cleaned"
